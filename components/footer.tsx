@@ -8,13 +8,13 @@ const footerLinks = {
   ],
   connect: [
     { name: "Caliph Connect", href: "/caliph-connect" },
-    { name: "Startup Up", href: "/startup-up" },
+    { name: "Startup", href: "/startup-up" },
     { name: "About", href: "/about" },
   ],
   social: [
     { name: "LinkedIn", href: "#" },
     { name: "Twitter", href: "#" },
-    { name: "Instagram", href: "#" },
+    { name: "Instagram", href: "https://www.instagram.com/life.at.caliph/" },
   ],
 }
 
