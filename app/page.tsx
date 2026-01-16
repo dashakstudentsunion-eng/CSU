@@ -6,7 +6,7 @@ import { Footer } from "@/components/footer"
 
 const homeCards = [
   { id: 1, title: "Results", status: "Coming later" },
-  { id: 2, title: "Poster Event", status: "Coming later" },
+  { id: 2, title: "Event Poster", status: "Coming later" },
   { id: 3, title: "Achievements", status: "Coming later" },
   { id: 4, title: "Overall Performer", status: "Coming later" },
   { id: 5, title: "Academic Performer", status: "Coming later" },
