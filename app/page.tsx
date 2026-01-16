@@ -152,14 +152,11 @@ export default function HomePage() {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      {/* Hero Section: Carousel with heading and stat cards (Moved from second page) */}
+      {/* Hero Section: Carousel with heading and stat cards */}
       <Carousel />
 
-      {/* Second Page: Animated Counter */}
-      <AnimatedCounter />
-
-      {/* Third Page: Featured Categories */}
-      <section className="py-32 px-4 sm:px-6 lg:px-8">
+      {/* Second Page: Featured Categories */}
+      <section className="py-32 px-4 sm:px-6 lg:px-8 bg-background">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-semibold text-foreground mb-12">Featured Categories</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
@@ -174,6 +171,11 @@ export default function HomePage() {
             ))}
           </div>
         </div>
+      </section>
+
+      {/* Third Page: Animated Counter */}
+      <section className="min-h-screen flex items-center justify-center bg-white">
+        <AnimatedCounter />
       </section>
 
       <Footer />
