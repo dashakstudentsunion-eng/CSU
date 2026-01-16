@@ -51,19 +51,19 @@ function StatCards() {
   }, [count, target])
 
   return (
-    <div className="grid grid-cols-2 gap-6">
-      <div className="rounded-lg p-8 bg-white/10 border border-white/20 backdrop-blur-sm">
-        <p className="text-5xl font-bold text-white">{count}</p>
-        <p className="text-sm text-white/70 mt-1">Programs</p>
+    <div className="grid grid-cols-2 gap-4">
+      <div className="rounded-xl p-4 bg-white/10 border border-white/20 backdrop-blur-md shadow-2xl flex flex-col items-center justify-center aspect-video">
+        <p className="text-4xl font-bold text-white leading-none">{count}</p>
+        <p className="text-xs font-medium text-white/80 mt-1 uppercase tracking-wider">Programs</p>
       </div>
-      <div className="rounded-lg p-8 bg-white/10 border border-white/20 backdrop-blur-sm">
-        <p className="text-5xl font-bold text-white/30">-</p>
+      <div className="rounded-xl p-4 bg-white/10 border border-white/20 backdrop-blur-md shadow-2xl flex flex-col items-center justify-center aspect-video">
+        <p className="text-4xl font-bold text-white/30 leading-none">-</p>
       </div>
-      <div className="rounded-lg p-8 bg-white/10 border border-white/20 backdrop-blur-sm">
-        <p className="text-5xl font-bold text-white/30">-</p>
+      <div className="rounded-xl p-4 bg-white/10 border border-white/20 backdrop-blur-md shadow-2xl flex flex-col items-center justify-center aspect-video">
+        <p className="text-4xl font-bold text-white/30 leading-none">-</p>
       </div>
-      <div className="rounded-lg p-8 bg-white/10 border border-white/20 backdrop-blur-sm">
-        <p className="text-5xl font-bold text-white/30">-</p>
+      <div className="rounded-xl p-4 bg-white/10 border border-white/20 backdrop-blur-md shadow-2xl flex flex-col items-center justify-center aspect-video">
+        <p className="text-4xl font-bold text-white/30 leading-none">-</p>
       </div>
     </div>
   )
@@ -119,14 +119,16 @@ function Carousel() {
         <div className="max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left side: Heading */}
           <div className="text-white">
-            <h1 className="text-5xl lg:text-6xl font-bold text-balance">A students union initiative</h1>
-            <p className="mt-6 text-lg text-white/90 text-balance">
+            <h1 className="text-5xl lg:text-7xl font-bold text-balance leading-tight">A Students Union Initiative</h1>
+            <p className="mt-6 text-xl text-white/90 text-balance font-light">
               Empowering the next generation of leaders, innovators, and changemakers.
             </p>
           </div>
 
           {/* Right side: Stat cards */}
-          <StatCards />
+          <div className="max-w-sm mx-auto w-full">
+            <StatCards />
+          </div>
         </div>
       </div>
 
