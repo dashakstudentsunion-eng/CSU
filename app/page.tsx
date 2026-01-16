@@ -155,9 +155,22 @@ export default function HomePage() {
       {/* Hero Section: Carousel with heading and stat cards */}
       <Carousel />
 
-      {/* Second Page: Animated Counter */}
-      <section className="min-h-screen flex items-center justify-center bg-white">
-        <AnimatedCounter />
+      {/* Second Page: Featured Categories (The 5 cards) */}
+      <section className="py-32 px-4 sm:px-6 lg:px-8 bg-background">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-semibold text-foreground mb-12">Featured Categories</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+            {homeCards.map((card) => (
+              <div
+                key={card.id}
+                className="rounded-lg p-8 bg-card hover:shadow-lg transition-all cursor-pointer border border-border/50 hover:border-[#59050D]/30"
+              >
+                <h3 className="text-xl font-semibold text-[#59050D]">{card.title}</h3>
+                <p className="mt-6 text-sm text-muted-foreground">{card.status}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
 
       <Footer />
