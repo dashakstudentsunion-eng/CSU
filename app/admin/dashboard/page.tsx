@@ -68,20 +68,6 @@ export default function AdminDashboardPage() {
       router.push("/admin/verify")
     } else {
       setIsAuthed(true)
-      const fetchImages = async () => {
-        try {
-          const res = await fetch("/api/carousel")
-          if (res.ok) {
-            const data = await res.json()
-            if (data.length > 0) {
-              setCarouselImages(data)
-            }
-          }
-        } catch (e) {
-          console.error("Error fetching images:", e)
-        }
-      }
-      fetchImages()
     }
   }, [router])
 
@@ -121,6 +107,24 @@ export default function AdminDashboardPage() {
       console.error("Error deleting image:", e)
     }
   }
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const res = await fetch("/api/carousel")
+        if (res.ok) {
+          const data = await res.json()
+          setCarouselImages(data)
+        }
+      } catch (e) {
+        console.error("Error fetching carousel images:", e)
+      }
+    }
+    if (isAuthed) {
+      const interval = setInterval(fetchImages, 1000)
+      return () => clearInterval(interval)
+    }
+  }, [isAuthed])
 
   const handleLogout = () => {
     sessionStorage.removeItem("adminAuth")
