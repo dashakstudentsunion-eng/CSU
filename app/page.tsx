@@ -163,10 +163,11 @@ export default function HomePage() {
             {homeCards.map((card) => (
               <div
                 key={card.id}
-                className="rounded-lg p-8 bg-card hover:shadow-lg transition-all cursor-pointer border border-border/50 hover:border-[#59050D]/30"
+                className="group rounded-lg p-8 bg-card hover:shadow-2xl transition-all duration-300 cursor-pointer border border-border/50 hover:border-[#59050D]/50 hover:-translate-y-2 relative overflow-hidden"
               >
-                <h3 className="text-xl font-semibold text-[#59050D]">{card.title}</h3>
-                <p className="mt-6 text-sm text-muted-foreground">{card.status}</p>
+                <div className="absolute inset-0 bg-gradient-to-br from-[#59050D]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <h3 className="text-xl font-semibold text-[#59050D] relative z-10 group-hover:scale-105 transition-transform origin-left">{card.title}</h3>
+                <p className="mt-6 text-sm text-muted-foreground relative z-10">{card.status}</p>
               </div>
             ))}
           </div>

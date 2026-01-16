@@ -11,7 +11,7 @@ const navItems = [
   { name: "Program", href: "/program" },
   { name: "Meet the Hill", href: "/meet-the-hill" },
   { name: "Caliph Connect", href: "/caliph-connect" },
-  { name: "Startup Up", href: "/startup-up" },
+  { name: "Startup", href: "/startup-up" },
   { name: "About", href: "/about" },
 ]
 
