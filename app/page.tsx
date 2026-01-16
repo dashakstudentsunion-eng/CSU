@@ -38,10 +38,23 @@ function AnimatedCounter() {
 
 // Stat Cards for second page
 function StatCards() {
+  const [count, setCount] = useState(0)
+  const target = 200
+
+  useEffect(() => {
+    if (count < target) {
+      const timer = setTimeout(() => {
+        setCount((prev) => Math.min(prev + Math.ceil(target / 50), target))
+      }, 30)
+      return () => clearTimeout(timer)
+    }
+  }, [count, target])
+
   return (
     <div className="grid grid-cols-2 gap-6">
       <div className="rounded-lg p-8 bg-white/10 border border-white/20 backdrop-blur-sm">
-        <p className="text-5xl font-bold text-white">200</p>
+        <p className="text-5xl font-bold text-white">{count}</p>
+        <p className="text-sm text-white/70 mt-1">Programs</p>
       </div>
       <div className="rounded-lg p-8 bg-white/10 border border-white/20 backdrop-blur-sm">
         <p className="text-5xl font-bold text-white/30">-</p>
@@ -137,11 +150,11 @@ export default function HomePage() {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      {/* First Page: Animated Counter */}
-      <AnimatedCounter />
-
-      {/* Second Page: Carousel with heading and stat cards */}
+      {/* Hero Section: Carousel with heading and stat cards (Moved from second page) */}
       <Carousel />
+
+      {/* Second Page: Animated Counter */}
+      <AnimatedCounter />
 
       {/* Third Page: Featured Categories */}
       <section className="py-32 px-4 sm:px-6 lg:px-8">
