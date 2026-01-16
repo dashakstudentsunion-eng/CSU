@@ -8,24 +8,11 @@ const _inter = Inter({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "The Hill - Innovation & Leadership Ecosystem",
-  description: "Empowering the next generation of leaders and innovators",
+  title: "Caliph Students' Union",
+  description: "DASHAK - Caliph Students' Union 2025-26",
   generator: "v0.app",
   icons: {
-    icon: [
-      {
-        url: "/icon-light-32x32.png",
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        url: "/icon-dark-32x32.png",
-        media: "(prefers-color-scheme: dark)",
-      },
-      {
-        url: "/icon.svg",
-        type: "image/svg+xml",
-      },
-    ],
+    icon: "/favicon.png",
     apple: "/apple-icon.png",
   },
 }
