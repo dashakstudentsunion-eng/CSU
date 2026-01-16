@@ -99,8 +99,8 @@ function Carousel() {
     }
     fetchImages()
     
-    // Refresh images every 5 seconds to keep devices in sync
-    const interval = setInterval(fetchImages, 5000)
+    // Refresh images every 1 second for near real-time sync
+    const interval = setInterval(fetchImages, 1000)
     return () => clearInterval(interval)
   }, [])
 
