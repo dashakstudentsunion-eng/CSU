@@ -72,24 +72,36 @@ function StatCards() {
 // Carousel for second page
 function Carousel() {
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [carouselImages, setCarouselImages] = useState([
-    { id: 1, url: "/images/caliph-20vollyball-20league.webp" },
-    {
-      id: 2,
-      url: "/images/purple-20and-20white-20modern-20geometric-20football-20match-20schedule-20instagram-20post.webp",
-    },
-  ])
+  const [carouselImages, setCarouselImages] = useState<Array<{ id: number; url: string }>>([])
 
   useEffect(() => {
-    const savedImages = localStorage.getItem("carouselImages")
-    if (savedImages) {
+    const fetchImages = async () => {
       try {
-        const parsedImages = JSON.parse(savedImages)
-        setCarouselImages(parsedImages)
+        const res = await fetch("/api/carousel")
+        if (res.ok) {
+          const data = await res.json()
+          if (data && data.length > 0) {
+            setCarouselImages(data)
+          } else {
+            // Default images if none in DB
+            setCarouselImages([
+              { id: 1, url: "/images/caliph-20vollyball-20league.webp" },
+              {
+                id: 2,
+                url: "/images/purple-20and-20white-20modern-20geometric-20football-20match-20schedule-20instagram-20post.webp",
+              },
+            ])
+          }
+        }
       } catch (e) {
-        console.error("Error parsing carousel images:", e)
+        console.error("Error fetching carousel images:", e)
       }
     }
+    fetchImages()
+    
+    // Refresh images every 5 seconds to keep devices in sync
+    const interval = setInterval(fetchImages, 5000)
+    return () => clearInterval(interval)
   }, [])
 
   useEffect(() => {

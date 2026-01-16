@@ -68,38 +68,58 @@ export default function AdminDashboardPage() {
       router.push("/admin/verify")
     } else {
       setIsAuthed(true)
-      const savedImages = localStorage.getItem("carouselImages")
-      if (savedImages) {
-        setCarouselImages(JSON.parse(savedImages))
+      const fetchImages = async () => {
+        try {
+          const res = await fetch("/api/carousel")
+          if (res.ok) {
+            const data = await res.json()
+            if (data.length > 0) {
+              setCarouselImages(data)
+            }
+          }
+        } catch (e) {
+          console.error("Error fetching images:", e)
+        }
       }
+      fetchImages()
     }
   }, [router])
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
       const reader = new FileReader()
-      reader.onload = (event) => {
+      reader.onload = async (event) => {
         const base64 = event.target?.result as string
-        const newId = carouselImages.length > 0 ? Math.max(...carouselImages.map((img) => img.id)) + 1 : 1
-        const newImage = {
-          id: newId,
-          url: base64,
+        try {
+          const res = await fetch("/api/carousel", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ url: base64 }),
+          })
+          if (res.ok) {
+            const newImage = await res.json()
+            setCarouselImages((prev) => [...prev, newImage])
+            setShowAddImageForm(false)
+          }
+        } catch (e) {
+          console.error("Error saving image:", e)
         }
-        const updatedImages = [...carouselImages, newImage]
-        setCarouselImages(updatedImages)
-        localStorage.setItem("carouselImages", JSON.stringify(updatedImages))
-        setShowAddImageForm(false)
         e.target.value = ""
       }
       reader.readAsDataURL(file)
     }
   }
 
-  const deleteCarouselImage = (id: number) => {
-    const updatedImages = carouselImages.filter((img) => img.id !== id)
-    setCarouselImages(updatedImages)
-    localStorage.setItem("carouselImages", JSON.stringify(updatedImages))
+  const deleteCarouselImage = async (id: number) => {
+    try {
+      const res = await fetch(`/api/carousel?id=${id}`, { method: "DELETE" })
+      if (res.ok) {
+        setCarouselImages((prev) => prev.filter((img) => img.id !== id))
+      }
+    } catch (e) {
+      console.error("Error deleting image:", e)
+    }
   }
 
   const handleLogout = () => {
