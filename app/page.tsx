@@ -3,6 +3,9 @@
 import { useState, useEffect } from "react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { toast } from "sonner"
 
 const homeCards = [
   { id: 1, title: "Results", status: "Coming later" },
@@ -120,11 +123,118 @@ function HeroSection() {
   )
 }
 
+function ConnectSection() {
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    batch: "",
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    try {
+      const res = await fetch("/api/union-messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      })
+      if (res.ok) {
+        toast.success("Your message has been submitted successfully.")
+        setFormData({ name: "", phone: "", email: "", batch: "" })
+      } else {
+        toast.error("Failed to submit message. Please try again.")
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  return (
+    <section className="py-24 px-4 bg-[#FAFAF8]">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold text-[#59050D]">Connect With Union</h2>
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="order-2 lg:order-1">
+            <form onSubmit={handleSubmit} className="space-y-6 max-w-md mx-auto lg:mx-0">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-muted-foreground">Name</label>
+                <Input
+                  required
+                  placeholder="Your Name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="bg-white border-border/50 focus:border-[#59050D]/50 transition-all h-12"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-muted-foreground">Phone Number</label>
+                <Input
+                  required
+                  type="tel"
+                  placeholder="Your Phone Number"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  className="bg-white border-border/50 focus:border-[#59050D]/50 transition-all h-12"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-muted-foreground">Email</label>
+                <Input
+                  required
+                  type="email"
+                  placeholder="Your Email Address"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="bg-white border-border/50 focus:border-[#59050D]/50 transition-all h-12"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-muted-foreground">Batch</label>
+                <Input
+                  required
+                  placeholder="Your Batch"
+                  value={formData.batch}
+                  onChange={(e) => setFormData({ ...formData, batch: e.target.value })}
+                  className="bg-white border-border/50 focus:border-[#59050D]/50 transition-all h-12"
+                />
+              </div>
+              <Button 
+                type="submit" 
+                disabled={isSubmitting}
+                className="w-full bg-[#59050D] hover:bg-[#59050D]/90 text-white font-semibold py-6 transition-all rounded-lg"
+              >
+                {isSubmitting ? "Submitting..." : "Connect With Union"}
+              </Button>
+            </form>
+          </div>
+          <div className="order-1 lg:order-2 flex justify-center">
+            <div className="relative w-full max-w-lg aspect-square rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
+              <img 
+                src="/images/caliph-20vollyball-20league.webp" 
+                alt="Connect with Union" 
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
       <HeroSection />
+      <ConnectSection />
       <section className="py-32 px-4 sm:px-6 lg:px-8 bg-background">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-semibold text-foreground mb-12">Featured Categories</h2>

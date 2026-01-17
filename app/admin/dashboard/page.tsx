@@ -26,6 +26,7 @@ const sidebarItems = [
   { name: "Events", icon: Calendar },
   { name: "Content", icon: FileText },
   { name: "Homepage Hero Images", icon: ImageIcon },
+  { name: "Union Messages", icon: FileText },
   { name: "Settings", icon: Settings },
 ]
 
@@ -49,6 +50,7 @@ export default function AdminDashboardPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [activeTab, setActiveTab] = useState("dashboard")
   const [heroImages, setHeroImages] = useState<Array<{ id: number; url: string; position: number }>>([])
+  const [unionMessages, setUnionMessages] = useState<Array<{ id: number; name: string; phone: string; email: string; batch: string; createdAt: string }>>([])
 
   useEffect(() => {
     const auth = sessionStorage.getItem("adminAuth")
@@ -61,18 +63,26 @@ export default function AdminDashboardPage() {
 
   useEffect(() => {
     if (isAuthed) {
-      const fetchHeroImages = async () => {
+      const fetchData = async () => {
         try {
-          const res = await fetch("/api/hero-images")
-          if (res.ok) {
-            const data = await res.json()
+          const [heroRes, messagesRes] = await Promise.all([
+            fetch("/api/hero-images"),
+            fetch("/api/union-messages")
+          ])
+          
+          if (heroRes.ok) {
+            const data = await heroRes.json()
             setHeroImages(data)
           }
+          if (messagesRes.ok) {
+            const data = await messagesRes.json()
+            setUnionMessages(data)
+          }
         } catch (e) {
-          console.error("Error fetching hero images:", e)
+          console.error("Error fetching admin data:", e)
         }
       }
-      fetchHeroImages()
+      fetchData()
     }
   }, [isAuthed])
 
@@ -139,6 +149,52 @@ export default function AdminDashboardPage() {
             </div>
           )
         })}
+      </div>
+    </>
+  )
+
+  const renderUnionMessages = () => (
+    <>
+      <div className="mb-8">
+        <h1 className="text-2xl font-semibold text-[#59050D]">Union Messages</h1>
+        <p className="mt-1 text-muted-foreground">Review all submissions from the "Connect With Union" form</p>
+      </div>
+
+      <div className="bg-card border border-border rounded-xl overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-secondary/50 border-b border-border">
+                <th className="px-6 py-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Name</th>
+                <th className="px-6 py-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Phone</th>
+                <th className="px-6 py-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Email</th>
+                <th className="px-6 py-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Batch</th>
+                <th className="px-6 py-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Date</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              {unionMessages.length > 0 ? (
+                unionMessages.map((msg) => (
+                  <tr key={msg.id} className="hover:bg-secondary/20 transition-colors">
+                    <td className="px-6 py-4 text-sm font-medium text-foreground">{msg.name}</td>
+                    <td className="px-6 py-4 text-sm text-muted-foreground">{msg.phone}</td>
+                    <td className="px-6 py-4 text-sm text-muted-foreground">{msg.email}</td>
+                    <td className="px-6 py-4 text-sm text-muted-foreground">{msg.batch}</td>
+                    <td className="px-6 py-4 text-sm text-muted-foreground">
+                      {new Date(msg.createdAt).toLocaleString()}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={5} className="px-6 py-12 text-center text-muted-foreground italic">
+                    No messages received yet
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </>
   )
@@ -257,6 +313,8 @@ export default function AdminDashboardPage() {
             </>
           ) : activeTab === "homepage-hero-images" ? (
             renderHeroContent()
+          ) : activeTab === "union-messages" ? (
+            renderUnionMessages()
           ) : (
             <div className="bg-card border border-border rounded-xl p-12 text-center">
               <p className="text-muted-foreground">This section is under development</p>
