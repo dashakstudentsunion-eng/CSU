@@ -69,96 +69,6 @@ function StatCards() {
   )
 }
 
-// Carousel for second page
-function Carousel() {
-  const [currentSlide, setCurrentSlide] = useState(0)
-  const [carouselImages, setCarouselImages] = useState<Array<{ id: number; url: string }>>([])
-
-  useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const res = await fetch("/api/carousel")
-        if (res.ok) {
-          const data = await res.json()
-          if (data && data.length > 0) {
-            setCarouselImages(data)
-          } else {
-            // Default images if none in DB
-            setCarouselImages([
-              { id: 1, url: "/images/caliph-20vollyball-20league.webp" },
-              {
-                id: 2,
-                url: "/images/purple-20and-20white-20modern-20geometric-20football-20match-20schedule-20instagram-20post.webp",
-              },
-            ])
-          }
-        }
-      } catch (e) {
-        console.error("Error fetching carousel images:", e)
-      }
-    }
-    fetchImages()
-    
-    // Refresh images every 1 second for near real-time sync
-    const interval = setInterval(fetchImages, 1000)
-    return () => clearInterval(interval)
-  }, [])
-
-  useEffect(() => {
-    if (carouselImages.length === 0) return
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % carouselImages.length)
-    }, 3000)
-    return () => clearInterval(interval)
-  }, [carouselImages.length])
-
-  return (
-    <section className="w-screen h-screen relative -mx-[calc((100vw-100%)/2)] overflow-hidden">
-      {carouselImages.map((image, index) => (
-        <div
-          key={image.id}
-          className={`absolute inset-0 transition-opacity duration-1000 ${
-            index === currentSlide ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <img src={image.url || "/placeholder.svg"} alt="Carousel" className="w-full h-full object-cover" />
-        </div>
-      ))}
-
-      {/* Carousel content overlay */}
-      <div className="absolute inset-0 bg-black/40" />
-      <div className="absolute inset-0 flex items-center justify-center px-4">
-        <div className="max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left side: Heading */}
-          <div className="text-white">
-            <h1 className="text-5xl lg:text-7xl font-bold text-balance leading-tight">A Students Union Initiative</h1>
-            <p className="mt-6 text-xl text-white/90 text-balance font-light">
-              Empowering the next generation of leaders, innovators, and changemakers.
-            </p>
-          </div>
-
-          {/* Right side: Stat cards */}
-          <div className="max-w-sm mx-auto w-full">
-            <StatCards />
-          </div>
-        </div>
-      </div>
-
-      {/* Carousel indicators */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
-        {carouselImages.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentSlide(index)}
-            className={`w-3 h-3 rounded-full transition-all ${index === currentSlide ? "bg-white w-8" : "bg-white/50"}`}
-            aria-label={`Go to slide ${index + 1}`}
-          />
-        ))}
-      </div>
-    </section>
-  )
-}
-
 // Interactive Stacked Image Component
 function HeroStack() {
   const [images, setImages] = useState<string[]>([])
@@ -250,9 +160,6 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <HeroSection />
-
-      {/* The rest of the page... (Featured Categories) */}
-      <Carousel />
 
       {/* Second Page: Featured Categories (The 5 cards) */}
       <section className="py-32 px-4 sm:px-6 lg:px-8 bg-background">
