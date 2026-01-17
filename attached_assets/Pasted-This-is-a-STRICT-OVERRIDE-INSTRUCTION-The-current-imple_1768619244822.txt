@@ -1,0 +1,143 @@
+This is a STRICT OVERRIDE INSTRUCTION.
+The current implementation is incorrect.
+You must remove design freedom and follow the rules below exactly.
+
+SECTION TYPE (NON-NEGOTIABLE)
+
+The “Connect With Union” section must be built as a controlled, admin-driven slider section, not a static form and not an auto-designed layout.
+
+FRONTEND BEHAVIOR (EXACT FLOW)
+STATE 1 — INTRO VIEW
+
+Full section visible
+
+One background image only
+
+Background image must come from admin panel selection
+
+Overlay content on the left:
+
+Heading: Connect With Union
+
+Subtext: Express your best
+
+Social media links/icons (editable via admin)
+
+No form fields visible
+
+STATE 2 — FORM VIEW (SLIDE TRANSITION)
+
+On clicking “Connect With Union”:
+
+Background image remains (same image)
+
+Left content slides/replaces into a form
+
+Form fields (fixed, not configurable):
+
+Name
+
+Phone Number
+
+Email
+
+Batch
+
+Submit button text: Connect With Union
+
+STATE 3 — CONFIRMATION VIEW
+
+After submission:
+
+Show confirmation message only:
+“Your message has been submitted successfully.”
+
+No layout change
+
+No new images
+
+IMAGE CONTROL (VERY IMPORTANT — THIS IS THE FIX)
+
+❗ The image must NOT be hardcoded
+❗ The image must NOT be randomly chosen
+❗ The image must NOT change automatically
+
+Image Rules:
+
+The background image must be:
+
+Uploaded via Admin Panel
+
+Selected from an image picker
+
+Only ONE image active at a time
+
+Admin can:
+
+Upload image
+
+Replace image
+
+Remove image
+
+The selected image must instantly reflect on the homepage
+
+ADMIN PANEL — REQUIRED CONTROLS
+
+Add a dedicated admin section called:
+
+“Connect With Union – Settings”
+
+This section must include:
+
+1️⃣ Background Image Manager
+
+Upload / replace background image
+
+Preview current image
+
+2️⃣ Text Controls
+
+Edit heading text
+
+Edit subtext (“Express your best”)
+
+3️⃣ Social Media Links
+
+Add / edit platform links
+
+ADMIN PANEL — MESSAGES
+
+Add a second admin section:
+
+“Union Messages”
+
+Store all form submissions
+
+Display columns:
+
+Name
+
+Phone
+
+Email
+
+Batch
+
+Date & Time
+
+Messages must persist
+
+ABSOLUTE CONSTRAINTS
+
+DO NOT auto-design the section
+
+DO NOT insert placeholder images
+
+DO NOT change colors or fonts
+
+DO NOT change other homepage sections
+
+This section must behave exactly like a controlled component
+
+If any requirement conflicts with default behavior, these rules override everything.

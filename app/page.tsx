@@ -163,67 +163,67 @@ function ConnectSection() {
   if (!content) return null
 
   return (
-    <section className="py-24 px-4 bg-[#FAFAF8] overflow-hidden">
-      <div className="max-w-7xl mx-auto min-h-[500px] flex items-center">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full relative">
-          {/* Left Content Area */}
-          <div className="relative h-[400px] flex flex-col justify-center">
-            {/* Step 1: Initial Text */}
+    <section className="relative min-h-[600px] flex items-center py-24 px-4 overflow-hidden">
+      {/* Background Image - STRICTLY Controlled by Admin */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src={content.imageUrl} 
+          alt="Background" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" />
+      </div>
+
+      <div className="max-w-7xl mx-auto w-full relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="relative h-[450px] flex flex-col justify-center">
+            {/* Step 1: Initial Intro View */}
             <div 
-              className={`absolute inset-0 flex flex-col justify-center transition-all duration-700 ease-in-out ${
+              className={`absolute inset-0 flex flex-col justify-center transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${
                 step === 1 ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-full pointer-events-none"
               }`}
             >
-              <h2 className="text-5xl font-bold text-[#59050D] mb-4">{content.heading}</h2>
-              <p className="text-xl text-muted-foreground mb-8 italic">"{content.subtext}"</p>
+              <h2 className="text-5xl md:text-6xl font-bold text-white mb-4">{content.heading}</h2>
+              <p className="text-2xl text-white/80 mb-8 italic">"{content.subtext}"</p>
               <div className="flex gap-6 mb-8">
-                <a href={content.instagram} target="_blank" rel="noopener noreferrer" className="text-[#59050D] hover:scale-110 transition-transform"><Instagram size={28} /></a>
-                <a href={content.whatsapp} className="text-[#59050D] hover:scale-110 transition-transform"><MessageCircle size={28} /></a>
-                <a href={`mailto:${content.email}`} className="text-[#59050D] hover:scale-110 transition-transform"><Mail size={28} /></a>
+                <a href={content.instagram} target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#59050D] hover:scale-110 transition-all"><Instagram size={32} /></a>
+                <a href={content.whatsapp} className="text-white hover:text-[#59050D] hover:scale-110 transition-all"><MessageCircle size={32} /></a>
+                <a href={`mailto:${content.email}`} className="text-white hover:text-[#59050D] hover:scale-110 transition-all"><Mail size={32} /></a>
               </div>
               <Button 
                 onClick={() => setStep(2)}
-                className="w-fit bg-[#59050D] hover:bg-[#59050D]/90 text-white px-10 py-6 rounded-lg font-semibold"
+                className="w-fit bg-[#59050D] hover:bg-[#59050D]/90 text-white px-12 py-7 rounded-lg font-bold text-lg transition-transform hover:scale-105 active:scale-95"
               >
                 Connect With Union
               </Button>
             </div>
 
-            {/* Step 2 & 3: Form / Success */}
+            {/* Step 2 & 3: Form View / Confirmation View */}
             <div 
-              className={`absolute inset-0 transition-all duration-700 ease-in-out ${
-                step >= 2 ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full pointer-events-none"
+              className={`absolute inset-0 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+                step >= 2 ? "opacity-100 translate-x-0" : "opacity-100 translate-x-full pointer-events-none"
               }`}
             >
               {step === 2 ? (
-                <form onSubmit={handleSubmit} className="space-y-4 max-w-md">
-                  <Input required placeholder="Name" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="h-12" />
-                  <Input required type="tel" placeholder="Phone Number" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="h-12" />
-                  <Input required type="email" placeholder="Email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="h-12" />
-                  <Input required placeholder="Batch" value={formData.batch} onChange={e => setFormData({...formData, batch: e.target.value})} className="h-12" />
-                  <Button type="submit" disabled={isSubmitting} className="w-full bg-[#59050D] py-6 font-semibold">
-                    {isSubmitting ? "Submitting..." : "Connect With Union"}
-                  </Button>
-                </form>
+                <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 shadow-2xl max-w-md">
+                  <form onSubmit={handleSubmit} className="space-y-5">
+                    <Input required placeholder="Name" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="h-14 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:bg-white/20" />
+                    <Input required type="tel" placeholder="Phone Number" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="h-14 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:bg-white/20" />
+                    <Input required type="email" placeholder="Email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="h-14 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:bg-white/20" />
+                    <Input required placeholder="Batch" value={formData.batch} onChange={e => setFormData({...formData, batch: e.target.value})} className="h-14 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:bg-white/20" />
+                    <Button type="submit" disabled={isSubmitting} className="w-full bg-[#59050D] hover:bg-[#59050D]/90 py-7 font-bold text-lg transition-transform hover:scale-[1.02] active:scale-[0.98]">
+                      {isSubmitting ? "Submitting..." : "Connect With Union"}
+                    </Button>
+                  </form>
+                </div>
               ) : (
-                <div className="flex flex-col justify-center h-full">
-                  <h3 className="text-3xl font-bold text-[#59050D] mb-4">Thank You!</h3>
-                  <p className="text-xl text-muted-foreground">Your message has been submitted successfully.</p>
-                  <Button variant="ghost" onClick={() => {setStep(1); setFormData({name:"",phone:"",email:"",batch:""})}} className="mt-8 w-fit text-[#59050D]">Send another message</Button>
+                <div className="flex flex-col justify-center h-full bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 shadow-2xl max-w-md">
+                  <h3 className="text-3xl font-bold text-white mb-4">Submission Successful</h3>
+                  <p className="text-xl text-white/80">Your message has been submitted successfully.</p>
+                  <Button variant="ghost" onClick={() => {setStep(1); setFormData({name:"",phone:"",email:"",batch:""})}} className="mt-8 w-fit text-white hover:bg-white/10">Send another message</Button>
                 </div>
               )}
             </div>
-          </div>
-
-          {/* Right Image Area */}
-          <div className="relative h-[500px] w-full rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
-            <img 
-              src={content.imageUrl} 
-              alt="Connect with Union" 
-              className={`w-full h-full object-cover transition-all duration-1000 ease-in-out ${
-                step >= 2 ? "scale-110 brightness-75" : "scale-100 brightness-100"
-              }`}
-            />
           </div>
         </div>
       </div>

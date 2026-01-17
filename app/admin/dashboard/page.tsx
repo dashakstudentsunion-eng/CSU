@@ -100,6 +100,18 @@ export default function AdminDashboardPage() {
     }
   }
 
+  const handleUnionImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = async (event) => {
+        const base64 = event.target?.result as string
+        setUnionContent((prev: any) => ({ ...prev, imageUrl: base64 }))
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
   const handleHeroUpload = async (e: React.ChangeEvent<HTMLInputElement>, position: number) => {
     const file = e.target.files?.[0]
     if (file) {
@@ -216,10 +228,28 @@ export default function AdminDashboardPage() {
   const renderConnectContent = () => (
     <>
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-[#59050D]">Connect With Union Content</h1>
-        <p className="mt-1 text-muted-foreground">Manage text and links for the connect section</p>
+        <h1 className="text-2xl font-semibold text-[#59050D]">Connect With Union – Settings</h1>
+        <p className="mt-1 text-muted-foreground">Manage background image, text and links for the connect section</p>
       </div>
       <form onSubmit={handleContentUpdate} className="max-w-2xl space-y-6 bg-card border border-border p-8 rounded-xl">
+        <div className="space-y-4">
+          <label className="text-sm font-medium">Background Image</label>
+          <div className="w-full aspect-video bg-secondary/50 rounded-lg overflow-hidden border border-border mb-4">
+            {unionContent?.imageUrl ? (
+              <img src={unionContent.imageUrl} alt="Background" className="w-full h-full object-cover" />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-muted-foreground italic text-xs">
+                No image selected
+              </div>
+            )}
+          </div>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleUnionImageUpload}
+            className="text-xs w-full"
+          />
+        </div>
         <div className="space-y-2">
           <label className="text-sm font-medium">Heading</label>
           <Input value={unionContent?.heading} onChange={e => setUnionContent({...unionContent, heading: e.target.value})} />
