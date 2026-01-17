@@ -28,8 +28,99 @@ const sidebarItems = [
   { name: "Events", icon: Calendar, active: false },
   { name: "Content", icon: FileText, active: false },
   { name: "Carousel Images", icon: ImageIcon, active: false },
+  { name: "Homepage Hero Images", icon: ImageIcon, active: false },
   { name: "Settings", icon: Settings, active: false },
 ]
+
+// ... (stats, recentActivity remains same)
+
+export default function AdminDashboardPage() {
+  // ... (previous states)
+  const [heroImages, setHeroImages] = useState<Array<{ id: number; url: string; position: number }>>([])
+
+  useEffect(() => {
+    // ... (auth check)
+    if (isAuthed) {
+      const fetchHeroImages = async () => {
+        try {
+          const res = await fetch("/api/hero-images")
+          if (res.ok) {
+            const data = await res.json()
+            setHeroImages(data)
+          }
+        } catch (e) {
+          console.error("Error fetching hero images:", e)
+        }
+      }
+      fetchHeroImages()
+    }
+  }, [isAuthed])
+
+  const handleHeroUpload = async (e: React.ChangeEvent<HTMLInputElement>, position: number) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = async (event) => {
+        const base64 = event.target?.result as string
+        try {
+          const res = await fetch("/api/hero-images", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ url: base64, position }),
+          })
+          if (res.ok) {
+            const updated = await res.json()
+            setHeroImages((prev) => {
+              const filtered = prev.filter(img => img.position !== position)
+              return [...filtered, updated].sort((a, b) => a.position - b.position)
+            })
+          }
+        } catch (e) {
+          console.error("Error saving hero image:", e)
+        }
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  // Render hero section in main content
+  const renderHeroContent = () => (
+    <>
+      <div className="mb-8">
+        <h1 className="text-2xl font-semibold text-[#59050D]">Homepage Hero Images</h1>
+        <p className="mt-1 text-muted-foreground">Manage exactly 3 images for the interactive hero stack</p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {[0, 1, 2].map((pos) => {
+          const img = heroImages.find(i => i.position === pos)
+          return (
+            <div key={pos} className="bg-card border border-border rounded-xl p-6 flex flex-col items-center">
+              <h3 className="text-sm font-medium mb-4">Position {pos + 1}</h3>
+              <div className="w-full aspect-square bg-secondary/50 rounded-lg overflow-hidden mb-4 border border-border">
+                {img ? (
+                  <img src={img.url} alt={`Hero ${pos}`} className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-muted-foreground italic text-xs">
+                    No image
+                  </div>
+                )}
+              </div>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleHeroUpload(e, pos)}
+                className="text-xs w-full"
+              />
+            </div>
+          )
+        })}
+      </div>
+    </>
+  )
+
+  // ... Update main content switch to include activeTab === "homepage-hero-images"
+
 
 const stats = [
   { label: "Total Users", value: "1,234", change: "+12%" },
@@ -258,6 +349,8 @@ export default function AdminDashboardPage() {
                 <p className="text-muted-foreground text-sm">Reserved for future content management features</p>
               </div>
             </>
+          ) : activeTab === "homepage-hero-images" ? (
+            renderHeroContent()
           ) : activeTab === "carousel-images" ? (
             <>
               <div className="mb-8">

@@ -159,12 +159,99 @@ function Carousel() {
   )
 }
 
+// Interactive Stacked Image Component
+function HeroStack() {
+  const [images, setImages] = useState<string[]>([])
+  const [isHovered, setIsHovered] = useState(false)
+
+  useEffect(() => {
+    const fetchHeroImages = async () => {
+      try {
+        const res = await fetch("/api/hero-images")
+        if (res.ok) {
+          const data = await res.json()
+          if (data && data.length > 0) {
+            setImages(data.map((img: any) => img.url))
+          } else {
+            // Defaults
+            setImages([
+              "/images/caliph-20vollyball-20league.webp",
+              "/images/purple-20and-20white-20modern-20geometric-20football-20match-20schedule-20instagram-20post.webp",
+              "/images/caliph-20vollyball-20league.webp",
+            ])
+          }
+        }
+      } catch (e) {
+        console.error("Error fetching hero images:", e)
+      }
+    }
+    fetchHeroImages()
+    const interval = setInterval(fetchHeroImages, 2000)
+    return () => clearInterval(interval)
+  }, [])
+
+  if (images.length === 0) return null
+
+  return (
+    <div 
+      className="relative w-full aspect-square max-w-md mx-auto flex items-center justify-center cursor-pointer"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {images.map((url, idx) => {
+        // We want 3 images: top, middle, bottom
+        const offset = isHovered ? (idx - 1) * 40 : idx * 10
+        const rotate = isHovered ? (idx - 1) * 10 : idx * 2
+        const scale = 1 - idx * 0.05
+        
+        return (
+          <div
+            key={idx}
+            className="absolute inset-0 transition-all duration-500 ease-out rounded-2xl overflow-hidden shadow-2xl border-4 border-white/10"
+            style={{
+              transform: `translate(${offset}px, ${offset}px) rotate(${rotate}deg) scale(${scale})`,
+              zIndex: 30 - idx,
+              opacity: 1 - idx * 0.1,
+            }}
+          >
+            <img src={url} alt={`Hero ${idx}`} className="w-full h-full object-cover" />
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+// Updated Hero Section Component
+function HeroSection() {
+  return (
+    <section className="w-full min-h-[90vh] flex items-center bg-[#FAFAF8] py-20 px-4">
+      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        {/* Left Side: Bold Headline */}
+        <div className="flex flex-col justify-center">
+          <h1 className="text-6xl lg:text-8xl font-bold text-[#59050D] leading-tight text-center lg:text-left">
+            A Students’ Union Initiative
+          </h1>
+        </div>
+
+        {/* Right Side: Interactive Stacked Image */}
+        <div className="relative">
+          <HeroStack />
+        </div>
+      </div>
+    </section>
+  )
+}
+
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      {/* Hero Section: Carousel with heading and stat cards */}
+      {/* Hero Section */}
+      <HeroSection />
+
+      {/* The rest of the page... (Featured Categories) */}
       <Carousel />
 
       {/* Second Page: Featured Categories (The 5 cards) */}
