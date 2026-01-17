@@ -12,8 +12,7 @@ const footerLinks = {
     { name: "About", href: "/about" },
   ],
   social: [
-    { name: "LinkedIn", href: "#" },
-    { name: "Twitter", href: "#" },
+    { name: "LinkedIn", href: "https://www.linkedin.com/school/caliphlifeschool/posts/?feedView=all" },
     { name: "Instagram", href: "https://www.instagram.com/life.at.caliph/" },
   ],
 }

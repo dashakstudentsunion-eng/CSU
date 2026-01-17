@@ -57,6 +57,7 @@ export function Navbar() {
               <Link
                 key={item.name}
                 href={item.href}
+                prefetch={true}
                 className={cn(
                   "text-sm font-medium tracking-wide uppercase transition-colors",
                   pathname === item.href ? "text-primary" : "text-foreground hover:text-primary",
