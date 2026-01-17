@@ -126,7 +126,7 @@ function HeroSection() {
 import { Instagram, MessageCircle, Mail } from "lucide-react"
 
 function ConnectSection() {
-  const [step, setStep] = useState(1) // 1: Image View, 2: Form Slide In, 3: Submitted
+  const [viewState, setViewState] = useState<"initial" | "split" | "submitted">("initial")
   const [content, setContent] = useState<any>(null)
   const [formData, setFormData] = useState({
     name: "",
@@ -150,7 +150,7 @@ function ConnectSection() {
         body: JSON.stringify(formData),
       })
       if (res.ok) {
-        setStep(3)
+        setViewState("submitted")
         toast.success("Your message has been submitted successfully.")
       }
     } catch (error) {
@@ -163,64 +163,83 @@ function ConnectSection() {
   if (!content) return null
 
   return (
-    <section className="relative min-h-[600px] flex items-center py-24 px-4 overflow-hidden">
-      {/* Background Image - STRICTLY Controlled by Admin */}
-      <div className="absolute inset-0 z-0">
+    <section className="relative min-h-[700px] bg-[#FAFAF8] overflow-hidden">
+      {/* Background Image - Persistent */}
+      <div 
+        className={`absolute inset-0 z-0 transition-all duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+          viewState !== "initial" ? "lg:left-1/2 scale-105" : "left-0"
+        }`}
+      >
         <img 
           src={content.imageUrl} 
-          alt="Background" 
+          alt="Union" 
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" />
+        <div className={`absolute inset-0 bg-black/40 transition-opacity duration-1000 ${viewState !== "initial" ? "opacity-60" : "opacity-40"}`} />
+        
+        {/* Initial Overlay Text */}
+        <div 
+          className={`absolute inset-0 flex items-end justify-center pb-24 transition-all duration-700 ${
+            viewState === "initial" ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"
+          }`}
+        >
+          <button 
+            onClick={() => setViewState("split")}
+            className="group flex flex-col items-center gap-4"
+          >
+            <h2 className="text-6xl md:text-8xl font-bold text-white tracking-tighter hover:scale-105 transition-transform">
+              {content.heading}
+            </h2>
+            <div className="w-20 h-1 bg-white scale-x-0 group-hover:scale-x-100 transition-transform origin-center" />
+          </button>
+        </div>
       </div>
 
-      <div className="max-w-7xl mx-auto w-full relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="relative h-[450px] flex flex-col justify-center">
-            {/* Step 1: Initial Intro View */}
-            <div 
-              className={`absolute inset-0 flex flex-col justify-center transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${
-                step === 1 ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-full pointer-events-none"
-              }`}
-            >
-              <h2 className="text-5xl md:text-6xl font-bold text-white mb-4">{content.heading}</h2>
-              <p className="text-2xl text-white/80 mb-8 italic">"{content.subtext}"</p>
-              <div className="flex gap-6 mb-8">
-                <a href={content.instagram} target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#59050D] hover:scale-110 transition-all"><Instagram size={32} /></a>
-                <a href={content.whatsapp} className="text-white hover:text-[#59050D] hover:scale-110 transition-all"><MessageCircle size={32} /></a>
-                <a href={`mailto:${content.email}`} className="text-white hover:text-[#59050D] hover:scale-110 transition-all"><Mail size={32} /></a>
+      {/* Split Layout Container */}
+      <div className="relative z-10 max-w-7xl mx-auto h-[700px]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 h-full">
+          {/* Left Side: Content */}
+          <div 
+            className={`flex flex-col justify-center px-8 transition-all duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+              viewState !== "initial" ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-20 pointer-events-none"
+            }`}
+          >
+            <div className="max-w-md">
+              <h2 className="text-5xl font-bold text-[#59050D] mb-4">{content.heading}</h2>
+              <p className="text-xl text-muted-foreground mb-8 italic">"{content.subtext}"</p>
+              <div className="flex gap-6">
+                <a href={content.instagram} target="_blank" rel="noopener noreferrer" className="text-[#59050D] hover:scale-110 transition-transform p-3 bg-white rounded-full shadow-sm"><Instagram size={24} /></a>
+                <a href={content.whatsapp} className="text-[#59050D] hover:scale-110 transition-transform p-3 bg-white rounded-full shadow-sm"><MessageCircle size={24} /></a>
+                <a href={`mailto:${content.email}`} className="text-[#59050D] hover:scale-110 transition-transform p-3 bg-white rounded-full shadow-sm"><Mail size={24} /></a>
               </div>
-              <Button 
-                onClick={() => setStep(2)}
-                className="w-fit bg-[#59050D] hover:bg-[#59050D]/90 text-white px-12 py-7 rounded-lg font-bold text-lg transition-transform hover:scale-105 active:scale-95"
-              >
-                Connect With Union
-              </Button>
             </div>
+          </div>
 
-            {/* Step 2 & 3: Form View / Confirmation View */}
-            <div 
-              className={`absolute inset-0 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${
-                step >= 2 ? "opacity-100 translate-x-0" : "opacity-100 translate-x-full pointer-events-none"
-              }`}
-            >
-              {step === 2 ? (
-                <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 shadow-2xl max-w-md">
-                  <form onSubmit={handleSubmit} className="space-y-5">
-                    <Input required placeholder="Name" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="h-14 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:bg-white/20" />
-                    <Input required type="tel" placeholder="Phone Number" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="h-14 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:bg-white/20" />
-                    <Input required type="email" placeholder="Email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="h-14 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:bg-white/20" />
-                    <Input required placeholder="Batch" value={formData.batch} onChange={e => setFormData({...formData, batch: e.target.value})} className="h-14 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:bg-white/20" />
-                    <Button type="submit" disabled={isSubmitting} className="w-full bg-[#59050D] hover:bg-[#59050D]/90 py-7 font-bold text-lg transition-transform hover:scale-[1.02] active:scale-[0.98]">
-                      {isSubmitting ? "Submitting..." : "Connect With Union"}
-                    </Button>
-                  </form>
-                </div>
+          {/* Right Side: Form / Submission */}
+          <div 
+            className={`flex flex-col justify-center px-8 transition-all duration-1000 delay-300 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+              viewState !== "initial" ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full pointer-events-none"
+            }`}
+          >
+            <div className="bg-white p-10 rounded-3xl shadow-2xl border border-border/50 max-w-md w-full relative">
+              {viewState === "split" ? (
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <Input required placeholder="Name" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="h-12 border-border focus:border-[#59050D]/30" />
+                  <Input required type="tel" placeholder="Phone Number" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="h-12 border-border focus:border-[#59050D]/30" />
+                  <Input required type="email" placeholder="Email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="h-12 border-border focus:border-[#59050D]/30" />
+                  <Input required placeholder="Batch" value={formData.batch} onChange={e => setFormData({...formData, batch: e.target.value})} className="h-12 border-border focus:border-[#59050D]/30" />
+                  <Button type="submit" disabled={isSubmitting} className="w-full bg-[#59050D] hover:bg-[#59050D]/90 py-6 font-bold text-lg">
+                    {isSubmitting ? "Submitting..." : "Connect With Union"}
+                  </Button>
+                </form>
               ) : (
-                <div className="flex flex-col justify-center h-full bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 shadow-2xl max-w-md">
-                  <h3 className="text-3xl font-bold text-white mb-4">Submission Successful</h3>
-                  <p className="text-xl text-white/80">Your message has been submitted successfully.</p>
-                  <Button variant="ghost" onClick={() => {setStep(1); setFormData({name:"",phone:"",email:"",batch:""})}} className="mt-8 w-fit text-white hover:bg-white/10">Send another message</Button>
+                <div className="text-center py-8">
+                  <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
+                  </div>
+                  <h3 className="text-2xl font-bold text-foreground mb-2">Submission Successful</h3>
+                  <p className="text-muted-foreground">Your message has been submitted successfully.</p>
+                  <Button variant="ghost" onClick={() => {setViewState("initial"); setFormData({name:"",phone:"",email:"",batch:""})}} className="mt-8 text-[#59050D]">Close</Button>
                 </div>
               )}
             </div>

@@ -1,0 +1,135 @@
+Build a controlled, animated “Connect With Union” section by STRICTLY following the uploaded video reference.
+This is NOT a static section. This is NOT a free-form design.
+Follow the interaction flow and layout EXACTLY as described below.
+
+INITIAL VIEW (STATE 1 – IMAGE FIRST)
+
+The section should first display ONE large image covering the section area
+
+On the bottom of the image, overlay the text:
+“Connect With Union”
+
+No form fields visible
+
+No split layout yet
+
+This image must come from Admin Panel selection
+
+INTERACTION TRIGGER (STATE 2 – SPLIT TRANSITION)
+
+When the user scrolls to the section OR interacts with the image/text:
+
+The layout transitions into a two-column split
+
+LEFT SIDE (TEXT + SOCIALS)
+
+After the split:
+
+Left side must show:
+
+Heading: Connect With Union
+
+Subtext: Express your best
+
+A list of social media platforms/icons (Instagram, WhatsApp, Email, etc.)
+
+No form on the left
+
+Clean, minimal, vertically centered
+
+RIGHT SIDE (FORM – SLIDE IN)
+
+The right side panel slides in from the right
+
+This sliding panel contains the form only
+
+Form Fields (FIXED ORDER):
+
+Name
+
+Phone Number
+
+Email
+
+Batch
+
+Button text: Connect With Union
+
+Smooth slide-in animation exactly like the video
+
+No page reload on submit
+
+SUBMISSION STATE (STATE 3)
+
+After successful submission:
+
+Replace the form with the message:
+“Your message has been submitted successfully.”
+
+Keep the same split layout
+
+IMAGE RULES (CRITICAL – NO EXCEPTIONS)
+
+The image:
+
+Must be uploaded and selected from Admin Panel
+
+Must NOT be hardcoded
+
+Must NOT be randomly chosen
+
+Only ONE image active at a time
+
+Image stays consistent across all states
+
+ADMIN PANEL (MANDATORY)
+
+Add a dedicated admin section called:
+
+“Connect With Union – Controls”
+
+Admin must be able to:
+
+Upload / replace the background image
+
+Preview the active image
+
+Edit:
+
+Heading text
+
+Subtext (“Express your best”)
+
+Social media links
+
+ADMIN PANEL – MESSAGES
+
+Add another admin section:
+
+“Union Messages”
+
+Store all submitted entries
+
+Display in table format:
+
+Name
+
+Phone Number
+
+Email
+
+Batch
+
+Date & Time
+
+STRICT CONSTRAINTS
+
+Do NOT redesign the section
+
+Do NOT insert placeholder or unrelated images
+
+Do NOT change colors, fonts, or other homepage sections
+
+This must behave like a state-based animated component, not a static block
+
+If default behavior conflicts with this, these rules override everything.

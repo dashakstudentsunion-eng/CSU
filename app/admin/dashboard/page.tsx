@@ -27,7 +27,7 @@ const sidebarItems = [
   { name: "Content", icon: FileText },
   { name: "Homepage Hero Images", icon: ImageIcon },
   { name: "Union Messages", icon: FileText },
-  { name: "Connect Content", icon: Settings },
+  { name: "Connect With Union – Controls", icon: Settings },
   { name: "Settings", icon: Settings },
 ]
 
