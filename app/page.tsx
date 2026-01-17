@@ -15,7 +15,7 @@ const homeCards = [
 // Interactive Stacked Image Component
 function HeroStack() {
   const [images, setImages] = useState<string[]>([])
-  const [isHovered, setIsHovered] = useState(false)
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null)
 
   useEffect(() => {
     const fetchHeroImages = async () => {
@@ -26,7 +26,6 @@ function HeroStack() {
           if (data && data.length > 0) {
             setImages(data.map((img: any) => img.url))
           } else {
-            // Defaults
             setImages([
               "/images/caliph-20vollyball-20league.webp",
               "/images/purple-20and-20white-20modern-20geometric-20football-20match-20schedule-20instagram-20post.webp",
@@ -46,27 +45,25 @@ function HeroStack() {
   if (images.length === 0) return null
 
   return (
-    <div 
-      className="relative w-full aspect-square max-w-md mx-auto flex items-center justify-center cursor-pointer"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+    <div className="relative w-full aspect-square max-w-md mx-auto flex items-center justify-center">
       {images.map((url, idx) => {
-        const offset = isHovered ? (idx - 1) * 40 : idx * 10
-        const rotate = isHovered ? (idx - 1) * 10 : idx * 2
-        const scale = 1 - idx * 0.05
+        const isHovered = hoveredIdx === idx
+        const isOtherHovered = hoveredIdx !== null && !isHovered
         
         return (
           <div
             key={idx}
-            className="absolute inset-0 transition-all duration-500 ease-out rounded-2xl overflow-hidden shadow-2xl border-4 border-white/10"
+            className="absolute inset-0 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] rounded-2xl overflow-hidden shadow-2xl border-4 border-white/10 cursor-pointer"
+            onMouseEnter={() => setHoveredIdx(idx)}
+            onMouseLeave={() => setHoveredIdx(null)}
             style={{
-              transform: `translate(${offset}px, ${offset}px) rotate(${rotate}deg) scale(${scale})`,
-              zIndex: 30 - idx,
-              opacity: 1 - idx * 0.1,
+              transform: `scale(${isHovered ? 1.05 : 1}) translateZ(${isHovered ? '20px' : '0px'})`,
+              zIndex: isHovered ? 50 : 30 - idx,
+              opacity: isOtherHovered ? 0.7 : 1,
+              filter: isOtherHovered ? 'grayscale(0.2) blur(1px)' : 'none',
             }}
           >
-            <img src={url} alt={`Hero ${idx}`} className="w-full h-full object-cover" />
+            <img src={url} alt={`Hero ${idx}`} className="w-full h-full object-cover transition-transform duration-700 ease-out" style={{ transform: isHovered ? 'scale(1.1)' : 'scale(1)' }} />
           </div>
         )
       })}
