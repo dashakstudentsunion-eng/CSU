@@ -45,52 +45,57 @@ function HeroStack() {
   if (images.length === 0) return null
 
   return (
-    <div className="relative w-full aspect-video max-w-4xl mx-auto flex items-center justify-center py-12">
-      {images.slice(0, 3).map((url, idx) => {
-        const isHovered = hoveredIdx === idx
-        const isOtherHovered = hoveredIdx !== null && !isHovered
-        
-        // Define positioning for the 3 images as per reference
-        // 0: Left, 1: Center (Dominant), 2: Right
-        let translateX = "0%"
-        let rotateZ = "0deg"
-        let zIndex = 10
-        let scale = 0.85
-        let brightness = "brightness(0.9)"
+    <div className="relative w-full aspect-[4/3] max-w-4xl mx-auto flex items-center justify-center py-20 px-4 overflow-visible">
+      <div className="relative w-full h-full flex items-center justify-center perspective-1000">
+        {images.slice(0, 3).map((url, idx) => {
+          const isHovered = hoveredIdx === idx
+          const isOtherHovered = hoveredIdx !== null && !isHovered
+          
+          let translateX = "0%"
+          let rotateY = "0deg"
+          let zIndex = 10
+          let scale = 0.9
+          let opacity = 1
 
-        if (idx === 0) { // Left
-          translateX = "-40%"
-          rotateZ = "-15deg"
-          zIndex = 5
-        } else if (idx === 1) { // Center
-          translateX = "0%"
-          rotateZ = "0deg"
-          zIndex = 20
-          scale = 1
-          brightness = "brightness(1)"
-        } else if (idx === 2) { // Right
-          translateX = "40%"
-          rotateZ = "15deg"
-          zIndex = 5
-        }
+          if (idx === 0) { // Left
+            translateX = "-45%"
+            rotateY = "25deg"
+            zIndex = 5
+          } else if (idx === 1) { // Center
+            translateX = "0%"
+            rotateY = "0deg"
+            zIndex = 20
+            scale = 1.05
+          } else if (idx === 2) { // Right
+            translateX = "45%"
+            rotateY = "-25deg"
+            zIndex = 5
+          }
 
-        return (
-          <div
-            key={idx}
-            className="absolute w-2/3 aspect-[4/3] transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] rounded-xl overflow-hidden shadow-2xl border-4 border-white/20 cursor-pointer"
-            onMouseEnter={() => setHoveredIdx(idx)}
-            onMouseLeave={() => setHoveredIdx(null)}
-            style={{
-              transform: `translateX(${translateX}) rotateZ(${rotateZ}) scale(${isHovered ? scale * 1.15 : scale}) translateZ(${isHovered ? '50px' : '0px'})`,
-              zIndex: isHovered ? 50 : zIndex,
-              opacity: isOtherHovered ? 0.6 : 1,
-              filter: `${isOtherHovered ? 'grayscale(0.2) blur(2px)' : 'none'} ${brightness}`,
-            }}
-          >
-            <img src={url} alt={`Hero ${idx}`} className="w-full h-full object-cover transition-transform duration-700 ease-out" style={{ transform: isHovered ? 'scale(1.1)' : 'scale(1)' }} />
-          </div>
-        )
-      })}
+          return (
+            <div
+              key={idx}
+              className="absolute w-[60%] aspect-[4/3] transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] rounded-[24px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.3)] border-[6px] border-white/95 cursor-pointer preserve-3d"
+              onMouseEnter={() => setHoveredIdx(idx)}
+              onMouseLeave={() => setHoveredIdx(null)}
+              style={{
+                transform: `translateX(${translateX}) rotateY(${rotateY}) scale(${isHovered ? scale * 1.12 : scale}) translateZ(${isHovered ? '100px' : '0px'})`,
+                zIndex: isHovered ? 50 : zIndex,
+                opacity: isOtherHovered ? 0.7 : 1,
+                filter: isOtherHovered ? 'brightness(0.8) blur(1px)' : 'none',
+              }}
+            >
+              <img 
+                src={url} 
+                alt={`Hero ${idx}`} 
+                className="w-full h-full object-cover transition-transform duration-700 ease-out" 
+                style={{ transform: isHovered ? 'scale(1.05)' : 'scale(1)' }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }
