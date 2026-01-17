@@ -1,0 +1,123 @@
+Create a multi-step sliding “Connect With Union” section by STRICTLY referring to the uploaded video.
+
+This section must work as a step-by-step slider, not a static form.
+Do NOT redesign the website. Only add this section exactly as shown in the video.
+
+SECTION STRUCTURE (VERY IMPORTANT)
+
+The section should behave like this:
+
+STEP 1 – IMAGE VIEW (Initial State)
+
+Display one full image on the right side, exactly like the video
+
+On the left side, show text only:
+
+Heading: “Connect With Union”
+
+Subtext: “Express your best”
+
+Below that, show social media platform icons/links (Instagram, WhatsApp, Email, etc.)
+
+No form fields visible in this step
+
+STEP 2 – FORM SLIDE IN (On Interaction)
+
+When the user clicks “Connect With Union” or scrolls/interacts:
+
+The right-side image slides or transitions
+
+The form appears on the left side, replacing the text smoothly
+
+Form Fields (Exact Order):
+
+Name
+
+Phone Number
+
+Email
+
+Batch
+
+Button text: “Connect With Union”
+
+Smooth animation exactly like the video
+
+No page reload
+
+STEP 3 – SUBMISSION STATE
+
+After successful submission:
+
+Show a clean confirmation message:
+“Your message has been submitted successfully.”
+
+Maintain the same layout and smooth transition style
+
+IMAGE BEHAVIOR (CRITICAL)
+
+Only one image at a time
+
+Image must:
+
+Match the size, placement, and flow shown in the video
+
+Change or animate subtly during slide transitions
+
+Do NOT show posters, schedules, or unrelated graphics
+
+Do NOT use random placeholder images
+
+ADMIN PANEL – MESSAGES & CONTENT CONTROL
+
+Extend the Admin Panel with two new sections:
+
+1️⃣ Union Messages
+
+Store every submitted form entry
+
+Display messages in a clean table with:
+
+Name
+
+Phone Number
+
+Email
+
+Batch
+
+Date & Time
+
+2️⃣ Connect With Union Content
+
+Ability to:
+
+Change the right-side image
+
+Edit the left-side text (“Express your best”)
+
+Update social media links
+
+Changes must reflect instantly on the homepage.
+
+STRICT CONSTRAINTS
+
+Follow the uploaded video exactly
+
+This is a step-based animated section, not a static form
+
+Do NOT change:
+
+Navigation
+
+Colors
+
+Other homepage sections
+
+Keep everything:
+
+Clean
+
+Premium
+
+Student-union focused

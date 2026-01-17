@@ -27,6 +27,7 @@ const sidebarItems = [
   { name: "Content", icon: FileText },
   { name: "Homepage Hero Images", icon: ImageIcon },
   { name: "Union Messages", icon: FileText },
+  { name: "Connect Content", icon: Settings },
   { name: "Settings", icon: Settings },
 ]
 
@@ -51,6 +52,7 @@ export default function AdminDashboardPage() {
   const [activeTab, setActiveTab] = useState("dashboard")
   const [heroImages, setHeroImages] = useState<Array<{ id: number; url: string; position: number }>>([])
   const [unionMessages, setUnionMessages] = useState<Array<{ id: number; name: string; phone: string; email: string; batch: string; createdAt: string }>>([])
+  const [unionContent, setUnionContent] = useState<any>(null)
 
   useEffect(() => {
     const auth = sessionStorage.getItem("adminAuth")
@@ -65,19 +67,15 @@ export default function AdminDashboardPage() {
     if (isAuthed) {
       const fetchData = async () => {
         try {
-          const [heroRes, messagesRes] = await Promise.all([
+          const [heroRes, messagesRes, contentRes] = await Promise.all([
             fetch("/api/hero-images"),
-            fetch("/api/union-messages")
+            fetch("/api/union-messages"),
+            fetch("/api/union-content")
           ])
           
-          if (heroRes.ok) {
-            const data = await heroRes.json()
-            setHeroImages(data)
-          }
-          if (messagesRes.ok) {
-            const data = await messagesRes.json()
-            setUnionMessages(data)
-          }
+          if (heroRes.ok) setHeroImages(await heroRes.json())
+          if (messagesRes.ok) setUnionMessages(await messagesRes.json())
+          if (contentRes.ok) setUnionContent(await contentRes.json())
         } catch (e) {
           console.error("Error fetching admin data:", e)
         }
@@ -85,6 +83,22 @@ export default function AdminDashboardPage() {
       fetchData()
     }
   }, [isAuthed])
+
+  const handleContentUpdate = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      const res = await fetch("/api/union-content", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(unionContent),
+      })
+      if (res.ok) {
+        toast.success("Content updated successfully")
+      }
+    } catch (e) {
+      toast.error("Failed to update content")
+    }
+  }
 
   const handleHeroUpload = async (e: React.ChangeEvent<HTMLInputElement>, position: number) => {
     const file = e.target.files?.[0]
@@ -196,6 +210,38 @@ export default function AdminDashboardPage() {
           </table>
         </div>
       </div>
+    </>
+  )
+
+  const renderConnectContent = () => (
+    <>
+      <div className="mb-8">
+        <h1 className="text-2xl font-semibold text-[#59050D]">Connect With Union Content</h1>
+        <p className="mt-1 text-muted-foreground">Manage text and links for the connect section</p>
+      </div>
+      <form onSubmit={handleContentUpdate} className="max-w-2xl space-y-6 bg-card border border-border p-8 rounded-xl">
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Heading</label>
+          <Input value={unionContent?.heading} onChange={e => setUnionContent({...unionContent, heading: e.target.value})} />
+        </div>
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Subtext</label>
+          <Input value={unionContent?.subtext} onChange={e => setUnionContent({...unionContent, subtext: e.target.value})} />
+        </div>
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Instagram Link</label>
+          <Input value={unionContent?.instagram} onChange={e => setUnionContent({...unionContent, instagram: e.target.value})} />
+        </div>
+        <div className="space-y-2">
+          <label className="text-sm font-medium">WhatsApp Link</label>
+          <Input value={unionContent?.whatsapp} onChange={e => setUnionContent({...unionContent, whatsapp: e.target.value})} />
+        </div>
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Email Address</label>
+          <Input value={unionContent?.email} onChange={e => setUnionContent({...unionContent, email: e.target.value})} />
+        </div>
+        <Button type="submit" className="bg-[#59050D]">Save Changes</Button>
+      </form>
     </>
   )
 
@@ -315,6 +361,8 @@ export default function AdminDashboardPage() {
             renderHeroContent()
           ) : activeTab === "union-messages" ? (
             renderUnionMessages()
+          ) : activeTab === "connect-content" ? (
+            renderConnectContent()
           ) : (
             <div className="bg-card border border-border rounded-xl p-12 text-center">
               <p className="text-muted-foreground">This section is under development</p>

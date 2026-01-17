@@ -123,7 +123,11 @@ function HeroSection() {
   )
 }
 
+import { Instagram, MessageCircle, Mail } from "lucide-react"
+
 function ConnectSection() {
+  const [step, setStep] = useState(1) // 1: Image View, 2: Form Slide In, 3: Submitted
+  const [content, setContent] = useState<any>(null)
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -131,6 +135,10 @@ function ConnectSection() {
     batch: "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  useEffect(() => {
+    fetch("/api/union-content").then(res => res.json()).then(data => setContent(data))
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -142,86 +150,80 @@ function ConnectSection() {
         body: JSON.stringify(formData),
       })
       if (res.ok) {
+        setStep(3)
         toast.success("Your message has been submitted successfully.")
-        setFormData({ name: "", phone: "", email: "", batch: "" })
-      } else {
-        toast.error("Failed to submit message. Please try again.")
       }
     } catch (error) {
-      toast.error("An error occurred. Please try again.")
+      toast.error("Failed to submit message.")
     } finally {
       setIsSubmitting(false)
     }
   }
 
+  if (!content) return null
+
   return (
-    <section className="py-24 px-4 bg-[#FAFAF8]">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-[#59050D]">Connect With Union</h2>
-        </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="order-2 lg:order-1">
-            <form onSubmit={handleSubmit} className="space-y-6 max-w-md mx-auto lg:mx-0">
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-muted-foreground">Name</label>
-                <Input
-                  required
-                  placeholder="Your Name"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="bg-white border-border/50 focus:border-[#59050D]/50 transition-all h-12"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-muted-foreground">Phone Number</label>
-                <Input
-                  required
-                  type="tel"
-                  placeholder="Your Phone Number"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="bg-white border-border/50 focus:border-[#59050D]/50 transition-all h-12"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-muted-foreground">Email</label>
-                <Input
-                  required
-                  type="email"
-                  placeholder="Your Email Address"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="bg-white border-border/50 focus:border-[#59050D]/50 transition-all h-12"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-muted-foreground">Batch</label>
-                <Input
-                  required
-                  placeholder="Your Batch"
-                  value={formData.batch}
-                  onChange={(e) => setFormData({ ...formData, batch: e.target.value })}
-                  className="bg-white border-border/50 focus:border-[#59050D]/50 transition-all h-12"
-                />
+    <section className="py-24 px-4 bg-[#FAFAF8] overflow-hidden">
+      <div className="max-w-7xl mx-auto min-h-[500px] flex items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full relative">
+          {/* Left Content Area */}
+          <div className="relative h-[400px] flex flex-col justify-center">
+            {/* Step 1: Initial Text */}
+            <div 
+              className={`absolute inset-0 flex flex-col justify-center transition-all duration-700 ease-in-out ${
+                step === 1 ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-full pointer-events-none"
+              }`}
+            >
+              <h2 className="text-5xl font-bold text-[#59050D] mb-4">{content.heading}</h2>
+              <p className="text-xl text-muted-foreground mb-8 italic">"{content.subtext}"</p>
+              <div className="flex gap-6 mb-8">
+                <a href={content.instagram} target="_blank" rel="noopener noreferrer" className="text-[#59050D] hover:scale-110 transition-transform"><Instagram size={28} /></a>
+                <a href={content.whatsapp} className="text-[#59050D] hover:scale-110 transition-transform"><MessageCircle size={28} /></a>
+                <a href={`mailto:${content.email}`} className="text-[#59050D] hover:scale-110 transition-transform"><Mail size={28} /></a>
               </div>
               <Button 
-                type="submit" 
-                disabled={isSubmitting}
-                className="w-full bg-[#59050D] hover:bg-[#59050D]/90 text-white font-semibold py-6 transition-all rounded-lg"
+                onClick={() => setStep(2)}
+                className="w-fit bg-[#59050D] hover:bg-[#59050D]/90 text-white px-10 py-6 rounded-lg font-semibold"
               >
-                {isSubmitting ? "Submitting..." : "Connect With Union"}
+                Connect With Union
               </Button>
-            </form>
-          </div>
-          <div className="order-1 lg:order-2 flex justify-center">
-            <div className="relative w-full max-w-lg aspect-square rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
-              <img 
-                src="/images/caliph-20vollyball-20league.webp" 
-                alt="Connect with Union" 
-                className="w-full h-full object-cover"
-              />
             </div>
+
+            {/* Step 2 & 3: Form / Success */}
+            <div 
+              className={`absolute inset-0 transition-all duration-700 ease-in-out ${
+                step >= 2 ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full pointer-events-none"
+              }`}
+            >
+              {step === 2 ? (
+                <form onSubmit={handleSubmit} className="space-y-4 max-w-md">
+                  <Input required placeholder="Name" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="h-12" />
+                  <Input required type="tel" placeholder="Phone Number" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="h-12" />
+                  <Input required type="email" placeholder="Email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="h-12" />
+                  <Input required placeholder="Batch" value={formData.batch} onChange={e => setFormData({...formData, batch: e.target.value})} className="h-12" />
+                  <Button type="submit" disabled={isSubmitting} className="w-full bg-[#59050D] py-6 font-semibold">
+                    {isSubmitting ? "Submitting..." : "Connect With Union"}
+                  </Button>
+                </form>
+              ) : (
+                <div className="flex flex-col justify-center h-full">
+                  <h3 className="text-3xl font-bold text-[#59050D] mb-4">Thank You!</h3>
+                  <p className="text-xl text-muted-foreground">Your message has been submitted successfully.</p>
+                  <Button variant="ghost" onClick={() => {setStep(1); setFormData({name:"",phone:"",email:"",batch:""})}} className="mt-8 w-fit text-[#59050D]">Send another message</Button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Right Image Area */}
+          <div className="relative h-[500px] w-full rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
+            <img 
+              src={content.imageUrl} 
+              alt="Connect with Union" 
+              className={`w-full h-full object-cover transition-all duration-1000 ease-in-out ${
+                step >= 2 ? "scale-110 brightness-75" : "scale-100 brightness-100"
+              }`}
+            />
           </div>
         </div>
       </div>
