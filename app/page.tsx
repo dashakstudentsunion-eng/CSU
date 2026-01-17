@@ -12,63 +12,6 @@ const homeCards = [
   { id: 5, title: "Academic Performer", status: "Coming later" },
 ]
 
-// Animated Counter Component
-function AnimatedCounter() {
-  const [count, setCount] = useState(0)
-  const target = 200
-
-  useEffect(() => {
-    if (count < target) {
-      const timer = setTimeout(() => {
-        setCount((prev) => Math.min(prev + Math.ceil(target / 30), target))
-      }, 50)
-      return () => clearTimeout(timer)
-    }
-  }, [count, target])
-
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <div className="text-center">
-        <p className="text-8xl lg:text-9xl font-bold text-[#59050D] mb-4">{count}</p>
-        <p className="text-2xl lg:text-3xl text-muted-foreground font-light">Students United</p>
-      </div>
-    </div>
-  )
-}
-
-// Stat Cards for second page
-function StatCards() {
-  const [count, setCount] = useState(0)
-  const target = 200
-
-  useEffect(() => {
-    if (count < target) {
-      const timer = setTimeout(() => {
-        setCount((prev) => Math.min(prev + Math.ceil(target / 50), target))
-      }, 30)
-      return () => clearTimeout(timer)
-    }
-  }, [count, target])
-
-  return (
-    <div className="grid grid-cols-2 gap-4">
-      <div className="rounded-xl p-4 bg-white/10 border border-white/20 backdrop-blur-md shadow-2xl flex flex-col items-center justify-center aspect-video">
-        <p className="text-4xl font-bold text-white leading-none">{count}</p>
-        <p className="text-xs font-medium text-white/80 mt-1 uppercase tracking-wider">Programs</p>
-      </div>
-      <div className="rounded-xl p-4 bg-white/10 border border-white/20 backdrop-blur-md shadow-2xl flex flex-col items-center justify-center aspect-video">
-        <p className="text-4xl font-bold text-white/30 leading-none">-</p>
-      </div>
-      <div className="rounded-xl p-4 bg-white/10 border border-white/20 backdrop-blur-md shadow-2xl flex flex-col items-center justify-center aspect-video">
-        <p className="text-4xl font-bold text-white/30 leading-none">-</p>
-      </div>
-      <div className="rounded-xl p-4 bg-white/10 border border-white/20 backdrop-blur-md shadow-2xl flex flex-col items-center justify-center aspect-video">
-        <p className="text-4xl font-bold text-white/30 leading-none">-</p>
-      </div>
-    </div>
-  )
-}
-
 // Interactive Stacked Image Component
 function HeroStack() {
   const [images, setImages] = useState<string[]>([])
@@ -109,7 +52,6 @@ function HeroStack() {
       onMouseLeave={() => setIsHovered(false)}
     >
       {images.map((url, idx) => {
-        // We want 3 images: top, middle, bottom
         const offset = isHovered ? (idx - 1) * 40 : idx * 10
         const rotate = isHovered ? (idx - 1) * 10 : idx * 2
         const scale = 1 - idx * 0.05
@@ -132,19 +74,16 @@ function HeroStack() {
   )
 }
 
-// Updated Hero Section Component
+// Hero Section Component
 function HeroSection() {
   return (
     <section className="w-full min-h-[90vh] flex items-center bg-[#FAFAF8] py-20 px-4">
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        {/* Left Side: Bold Headline */}
         <div className="flex flex-col justify-center">
           <h1 className="text-6xl lg:text-8xl font-bold text-[#59050D] leading-tight text-center lg:text-left">
             A Students’ Union Initiative
           </h1>
         </div>
-
-        {/* Right Side: Interactive Stacked Image */}
         <div className="relative">
           <HeroStack />
         </div>
@@ -157,11 +96,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-
-      {/* Hero Section */}
       <HeroSection />
-
-      {/* Second Page: Featured Categories (The 5 cards) */}
       <section className="py-32 px-4 sm:px-6 lg:px-8 bg-background">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-semibold text-foreground mb-12">Featured Categories</h2>
@@ -179,7 +114,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       <Footer />
     </div>
   )

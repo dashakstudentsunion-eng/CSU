@@ -17,29 +17,49 @@ import {
   X,
   ChevronRight,
   ImageIcon,
-  Trash2,
-  Plus,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const sidebarItems = [
-  { name: "Dashboard", icon: LayoutDashboard, active: true },
-  { name: "Users", icon: Users, active: false },
-  { name: "Events", icon: Calendar, active: false },
-  { name: "Content", icon: FileText, active: false },
-  { name: "Carousel Images", icon: ImageIcon, active: false },
-  { name: "Homepage Hero Images", icon: ImageIcon, active: false },
-  { name: "Settings", icon: Settings, active: false },
+  { name: "Dashboard", icon: LayoutDashboard },
+  { name: "Users", icon: Users },
+  { name: "Events", icon: Calendar },
+  { name: "Content", icon: FileText },
+  { name: "Homepage Hero Images", icon: ImageIcon },
+  { name: "Settings", icon: Settings },
 ]
 
-// ... (stats, recentActivity remains same)
+const stats = [
+  { label: "Total Users", value: "1,234", change: "+12%" },
+  { label: "Active Programs", value: "8", change: "+2" },
+  { label: "Applications", value: "56", change: "+23" },
+  { label: "Events This Month", value: "12", change: "+4" },
+]
+
+const recentActivity = [
+  { action: "New application received", user: "Sarah Johnson", time: "2 hours ago" },
+  { action: "Program enrollment completed", user: "Mike Chen", time: "4 hours ago" },
+  { action: "Event registration", user: "Emma Wilson", time: "6 hours ago" },
+  { action: "Content published", user: "Admin", time: "1 day ago" },
+]
 
 export default function AdminDashboardPage() {
-  // ... (previous states)
+  const router = useRouter()
+  const [isAuthed, setIsAuthed] = useState(false)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [activeTab, setActiveTab] = useState("dashboard")
   const [heroImages, setHeroImages] = useState<Array<{ id: number; url: string; position: number }>>([])
 
   useEffect(() => {
-    // ... (auth check)
+    const auth = sessionStorage.getItem("adminAuth")
+    if (auth !== "true") {
+      router.push("/admin/verify")
+    } else {
+      setIsAuthed(true)
+    }
+  }, [router])
+
+  useEffect(() => {
     if (isAuthed) {
       const fetchHeroImages = async () => {
         try {
@@ -83,7 +103,11 @@ export default function AdminDashboardPage() {
     }
   }
 
-  // Render hero section in main content
+  const handleLogout = () => {
+    sessionStorage.removeItem("adminAuth")
+    router.push("/")
+  }
+
   const renderHeroContent = () => (
     <>
       <div className="mb-8">
@@ -119,109 +143,6 @@ export default function AdminDashboardPage() {
     </>
   )
 
-  // ... Update main content switch to include activeTab === "homepage-hero-images"
-
-
-const stats = [
-  { label: "Total Users", value: "1,234", change: "+12%" },
-  { label: "Active Programs", value: "8", change: "+2" },
-  { label: "Applications", value: "56", change: "+23" },
-  { label: "Events This Month", value: "12", change: "+4" },
-]
-
-const recentActivity = [
-  { action: "New application received", user: "Sarah Johnson", time: "2 hours ago" },
-  { action: "Program enrollment completed", user: "Mike Chen", time: "4 hours ago" },
-  { action: "Event registration", user: "Emma Wilson", time: "6 hours ago" },
-  { action: "Content published", user: "Admin", time: "1 day ago" },
-]
-
-export default function AdminDashboardPage() {
-  const router = useRouter()
-  const [isAuthed, setIsAuthed] = useState(false)
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-  const [activeTab, setActiveTab] = useState("dashboard")
-  const [carouselImages, setCarouselImages] = useState<Array<{ id: number; url: string }>>([
-    {
-      id: 1,
-      url: "/images/caliph-20vollyball-20league.webp",
-    },
-    {
-      id: 2,
-      url: "/images/purple-20and-20white-20modern-20geometric-20football-20match-20schedule-20instagram-20post.webp",
-    },
-  ])
-  const [showAddImageForm, setShowAddImageForm] = useState(false)
-
-  useEffect(() => {
-    const auth = sessionStorage.getItem("adminAuth")
-    if (auth !== "true") {
-      router.push("/admin/verify")
-    } else {
-      setIsAuthed(true)
-    }
-  }, [router])
-
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onload = async (event) => {
-        const base64 = event.target?.result as string
-        try {
-          const res = await fetch("/api/carousel", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ url: base64 }),
-          })
-          if (res.ok) {
-            const newImage = await res.json()
-            setCarouselImages((prev) => [...prev, newImage])
-            setShowAddImageForm(false)
-          }
-        } catch (e) {
-          console.error("Error saving image:", e)
-        }
-        e.target.value = ""
-      }
-      reader.readAsDataURL(file)
-    }
-  }
-
-  const deleteCarouselImage = async (id: number) => {
-    try {
-      const res = await fetch(`/api/carousel?id=${id}`, { method: "DELETE" })
-      if (res.ok) {
-        setCarouselImages((prev) => prev.filter((img) => img.id !== id))
-      }
-    } catch (e) {
-      console.error("Error deleting image:", e)
-    }
-  }
-
-  useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const res = await fetch("/api/carousel")
-        if (res.ok) {
-          const data = await res.json()
-          setCarouselImages(data)
-        }
-      } catch (e) {
-        console.error("Error fetching carousel images:", e)
-      }
-    }
-    if (isAuthed) {
-      const interval = setInterval(fetchImages, 1000)
-      return () => clearInterval(interval)
-    }
-  }, [isAuthed])
-
-  const handleLogout = () => {
-    sessionStorage.removeItem("adminAuth")
-    router.push("/")
-  }
-
   if (!isAuthed) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -232,7 +153,6 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Top Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border">
         <div className="flex items-center justify-between h-16 px-4">
           <div className="flex items-center gap-4">
@@ -254,7 +174,6 @@ export default function AdminDashboardPage() {
         </div>
       </nav>
 
-      {/* Sidebar */}
       <aside
         className={cn(
           "fixed top-16 left-0 bottom-0 w-64 bg-card border-r border-border p-4 transition-transform lg:translate-x-0",
@@ -266,12 +185,12 @@ export default function AdminDashboardPage() {
             <button
               key={item.name}
               onClick={() => {
-                setActiveTab(item.name.toLowerCase().replace(" ", "-"))
+                setActiveTab(item.name.toLowerCase().replace(/\s+/g, "-"))
                 setIsSidebarOpen(false)
               }}
               className={cn(
                 "w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors",
-                activeTab === item.name.toLowerCase().replace(" ", "-") || item.active
+                activeTab === item.name.toLowerCase().replace(/\s+/g, "-")
                   ? "bg-primary text-primary-foreground"
                   : "text-muted-foreground hover:text-foreground hover:bg-secondary",
               )}
@@ -283,7 +202,6 @@ export default function AdminDashboardPage() {
         </nav>
       </aside>
 
-      {/* Main Content */}
       <main className="pt-16 lg:pl-64">
         <div className="p-6 lg:p-8">
           {activeTab === "dashboard" ? (
@@ -292,8 +210,6 @@ export default function AdminDashboardPage() {
                 <h1 className="text-2xl font-semibold text-foreground">Dashboard</h1>
                 <p className="mt-1 text-muted-foreground">Welcome to The Hill admin panel</p>
               </div>
-
-              {/* Stats Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                 {stats.map((stat) => (
                   <div key={stat.label} className="bg-card border border-border rounded-xl p-6">
@@ -305,10 +221,7 @@ export default function AdminDashboardPage() {
                   </div>
                 ))}
               </div>
-
-              {/* Content Sections */}
               <div className="grid lg:grid-cols-2 gap-6">
-                {/* Recent Activity */}
                 <div className="bg-card border border-border rounded-xl p-6">
                   <h2 className="font-semibold text-card-foreground mb-4">Recent Activity</h2>
                   <div className="space-y-4">
@@ -326,8 +239,6 @@ export default function AdminDashboardPage() {
                     ))}
                   </div>
                 </div>
-
-                {/* Quick Actions */}
                 <div className="bg-card border border-border rounded-xl p-6">
                   <h2 className="font-semibold text-card-foreground mb-4">Quick Actions</h2>
                   <div className="space-y-3">
@@ -343,92 +254,9 @@ export default function AdminDashboardPage() {
                   </div>
                 </div>
               </div>
-
-              {/* Reserved Section */}
-              <div className="mt-8 bg-secondary/50 border border-dashed border-border rounded-xl p-12 text-center">
-                <p className="text-muted-foreground text-sm">Reserved for future content management features</p>
-              </div>
             </>
           ) : activeTab === "homepage-hero-images" ? (
             renderHeroContent()
-          ) : activeTab === "carousel-images" ? (
-            <>
-              <div className="mb-8">
-                <h1 className="text-2xl font-semibold text-foreground">Carousel Images</h1>
-                <p className="mt-1 text-muted-foreground">Manage images displayed on the home page carousel</p>
-              </div>
-
-              {/* Carousel Images Management */}
-              <div className="bg-card border border-border rounded-xl p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="font-semibold text-card-foreground">Homepage Carousel</h2>
-                  <Button size="sm" onClick={() => setShowAddImageForm(!showAddImageForm)} className="gap-2">
-                    <Plus className="w-4 h-4" />
-                    Add Image
-                  </Button>
-                </div>
-
-                {/* Add Image Form */}
-                {showAddImageForm && (
-                  <div className="mb-6 p-4 bg-secondary/50 rounded-lg border border-border">
-                    <div className="space-y-4">
-                      <div>
-                        <label className="text-sm font-medium text-card-foreground">Upload Image</label>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={handleFileUpload}
-                          className="mt-2 block w-full text-sm text-card-foreground
-                            file:mr-4 file:py-2 file:px-4
-                            file:rounded-lg file:border-0
-                            file:text-sm file:font-semibold
-                            file:bg-primary file:text-primary-foreground
-                            hover:file:bg-primary/90"
-                        />
-                      </div>
-                      <div className="flex gap-2 justify-end">
-                        <Button variant="outline" size="sm" onClick={() => setShowAddImageForm(false)}>
-                          Cancel
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Images Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {carouselImages.length > 0 ? (
-                    carouselImages.map((image) => (
-                      <div
-                        key={image.id}
-                        className="relative group border border-border rounded-lg overflow-hidden bg-secondary/50"
-                      >
-                        <img
-                          src={image.url || "/placeholder.svg"}
-                          alt="Carousel"
-                          className="w-full h-40 object-cover"
-                        />
-                        <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/30 transition-colors flex items-end justify-end p-2 opacity-0 group-hover:opacity-100">
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            onClick={() => deleteCarouselImage(image.id)}
-                            className="w-full"
-                          >
-                            <Trash2 className="w-4 h-4 mr-2" />
-                            Delete
-                          </Button>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-sm text-muted-foreground col-span-full text-center py-8">
-                      No carousel images added yet. Click "Add Image" to get started.
-                    </p>
-                  )}
-                </div>
-              </div>
-            </>
           ) : (
             <div className="bg-card border border-border rounded-xl p-12 text-center">
               <p className="text-muted-foreground">This section is under development</p>
@@ -437,7 +265,6 @@ export default function AdminDashboardPage() {
         </div>
       </main>
 
-      {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
         <div
           className="fixed inset-0 bg-foreground/20 backdrop-blur-sm lg:hidden z-40"
