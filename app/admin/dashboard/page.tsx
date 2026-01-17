@@ -26,8 +26,6 @@ const sidebarItems = [
   { name: "Events", icon: Calendar },
   { name: "Content", icon: FileText },
   { name: "Homepage Hero Images", icon: ImageIcon },
-  { name: "Union Messages", icon: FileText },
-  { name: "Connect With Union – Controls", icon: Settings },
   { name: "Settings", icon: Settings },
 ]
 
@@ -51,8 +49,6 @@ export default function AdminDashboardPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [activeTab, setActiveTab] = useState("dashboard")
   const [heroImages, setHeroImages] = useState<Array<{ id: number; url: string; position: number }>>([])
-  const [unionMessages, setUnionMessages] = useState<Array<{ id: number; name: string; phone: string; email: string; batch: string; createdAt: string }>>([])
-  const [unionContent, setUnionContent] = useState<any>(null)
 
   useEffect(() => {
     const auth = sessionStorage.getItem("adminAuth")
@@ -67,15 +63,8 @@ export default function AdminDashboardPage() {
     if (isAuthed) {
       const fetchData = async () => {
         try {
-          const [heroRes, messagesRes, contentRes] = await Promise.all([
-            fetch("/api/hero-images"),
-            fetch("/api/union-messages"),
-            fetch("/api/union-content")
-          ])
-          
-          if (heroRes.ok) setHeroImages(await heroRes.json())
-          if (messagesRes.ok) setUnionMessages(await messagesRes.json())
-          if (contentRes.ok) setUnionContent(await contentRes.json())
+          const res = await fetch("/api/hero-images")
+          if (res.ok) setHeroImages(await res.json())
         } catch (e) {
           console.error("Error fetching admin data:", e)
         }
@@ -83,34 +72,6 @@ export default function AdminDashboardPage() {
       fetchData()
     }
   }, [isAuthed])
-
-  const handleContentUpdate = async (e: React.FormEvent) => {
-    e.preventDefault()
-    try {
-      const res = await fetch("/api/union-content", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(unionContent),
-      })
-      if (res.ok) {
-        toast.success("Content updated successfully")
-      }
-    } catch (e) {
-      toast.error("Failed to update content")
-    }
-  }
-
-  const handleUnionImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onload = async (event) => {
-        const base64 = event.target?.result as string
-        setUnionContent((prev: any) => ({ ...prev, imageUrl: base64 }))
-      }
-      reader.readAsDataURL(file)
-    }
-  }
 
   const handleHeroUpload = async (e: React.ChangeEvent<HTMLInputElement>, position: number) => {
     const file = e.target.files?.[0]
@@ -176,102 +137,6 @@ export default function AdminDashboardPage() {
           )
         })}
       </div>
-    </>
-  )
-
-  const renderUnionMessages = () => (
-    <>
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-[#59050D]">Union Messages</h1>
-        <p className="mt-1 text-muted-foreground">Review all submissions from the "Connect With Union" form</p>
-      </div>
-
-      <div className="bg-card border border-border rounded-xl overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="bg-secondary/50 border-b border-border">
-                <th className="px-6 py-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Name</th>
-                <th className="px-6 py-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Phone</th>
-                <th className="px-6 py-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Email</th>
-                <th className="px-6 py-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Batch</th>
-                <th className="px-6 py-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Date</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {unionMessages.length > 0 ? (
-                unionMessages.map((msg) => (
-                  <tr key={msg.id} className="hover:bg-secondary/20 transition-colors">
-                    <td className="px-6 py-4 text-sm font-medium text-foreground">{msg.name}</td>
-                    <td className="px-6 py-4 text-sm text-muted-foreground">{msg.phone}</td>
-                    <td className="px-6 py-4 text-sm text-muted-foreground">{msg.email}</td>
-                    <td className="px-6 py-4 text-sm text-muted-foreground">{msg.batch}</td>
-                    <td className="px-6 py-4 text-sm text-muted-foreground">
-                      {new Date(msg.createdAt).toLocaleString()}
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-muted-foreground italic">
-                    No messages received yet
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </>
-  )
-
-  const renderConnectContent = () => (
-    <>
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-[#59050D]">Connect With Union – Settings</h1>
-        <p className="mt-1 text-muted-foreground">Manage background image, text and links for the connect section</p>
-      </div>
-      <form onSubmit={handleContentUpdate} className="max-w-2xl space-y-6 bg-card border border-border p-8 rounded-xl">
-        <div className="space-y-4">
-          <label className="text-sm font-medium">Background Image</label>
-          <div className="w-full aspect-video bg-secondary/50 rounded-lg overflow-hidden border border-border mb-4">
-            {unionContent?.imageUrl ? (
-              <img src={unionContent.imageUrl} alt="Background" className="w-full h-full object-cover" />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center text-muted-foreground italic text-xs">
-                No image selected
-              </div>
-            )}
-          </div>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleUnionImageUpload}
-            className="text-xs w-full"
-          />
-        </div>
-        <div className="space-y-2">
-          <label className="text-sm font-medium">Heading</label>
-          <Input value={unionContent?.heading} onChange={e => setUnionContent({...unionContent, heading: e.target.value})} />
-        </div>
-        <div className="space-y-2">
-          <label className="text-sm font-medium">Subtext</label>
-          <Input value={unionContent?.subtext} onChange={e => setUnionContent({...unionContent, subtext: e.target.value})} />
-        </div>
-        <div className="space-y-2">
-          <label className="text-sm font-medium">Instagram Link</label>
-          <Input value={unionContent?.instagram} onChange={e => setUnionContent({...unionContent, instagram: e.target.value})} />
-        </div>
-        <div className="space-y-2">
-          <label className="text-sm font-medium">WhatsApp Link</label>
-          <Input value={unionContent?.whatsapp} onChange={e => setUnionContent({...unionContent, whatsapp: e.target.value})} />
-        </div>
-        <div className="space-y-2">
-          <label className="text-sm font-medium">Email Address</label>
-          <Input value={unionContent?.email} onChange={e => setUnionContent({...unionContent, email: e.target.value})} />
-        </div>
-        <Button type="submit" className="bg-[#59050D]">Save Changes</Button>
-      </form>
     </>
   )
 
@@ -389,10 +254,6 @@ export default function AdminDashboardPage() {
             </>
           ) : activeTab === "homepage-hero-images" ? (
             renderHeroContent()
-          ) : activeTab === "union-messages" ? (
-            renderUnionMessages()
-          ) : activeTab === "connect-content" ? (
-            renderConnectContent()
           ) : (
             <div className="bg-card border border-border rounded-xl p-12 text-center">
               <p className="text-muted-foreground">This section is under development</p>
