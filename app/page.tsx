@@ -60,7 +60,7 @@ function HeroStack() {
           if (idx === 0) { // Left
             translateX = "-48%"
             rotateY = "35deg"
-            rotateZ = "-2deg"
+            rotateZ = "-5deg" // Increased tilt
             zIndex = 5
           } else if (idx === 1) { // Center
             translateX = "0%"
@@ -71,7 +71,7 @@ function HeroStack() {
           } else if (idx === 2) { // Right
             translateX = "48%"
             rotateY = "-35deg"
-            rotateZ = "2deg"
+            rotateZ = "5deg" // Increased tilt
             zIndex = 5
           }
 
