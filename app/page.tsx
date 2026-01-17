@@ -53,21 +53,25 @@ function HeroStack() {
           
           let translateX = "0%"
           let rotateY = "0deg"
+          let rotateZ = "0deg"
           let zIndex = 10
           let scale = 0.85
 
           if (idx === 0) { // Left
             translateX = "-48%"
             rotateY = "35deg"
+            rotateZ = "-2deg"
             zIndex = 5
           } else if (idx === 1) { // Center
             translateX = "0%"
             rotateY = "0deg"
+            rotateZ = "0deg"
             zIndex = 20
             scale = 1
           } else if (idx === 2) { // Right
             translateX = "48%"
             rotateY = "-35deg"
+            rotateZ = "2deg"
             zIndex = 5
           }
 
@@ -78,7 +82,7 @@ function HeroStack() {
               onMouseEnter={() => setHoveredIdx(idx)}
               onMouseLeave={() => setHoveredIdx(null)}
               style={{
-                transform: `translateX(${translateX}) rotateY(${rotateY}) scale(${isHovered ? scale * 1.15 : scale}) translateZ(${isHovered ? '150px' : '0px'})`,
+                transform: `translateX(${translateX}) rotateY(${rotateY}) rotateZ(${rotateZ}) scale(${isHovered ? scale * 1.15 : scale}) translateZ(${isHovered ? '150px' : '0px'})`,
                 zIndex: isHovered ? 50 : zIndex,
                 opacity: isOtherHovered ? 0.65 : 1,
                 filter: isOtherHovered ? 'brightness(0.7) blur(2px)' : 'none',
