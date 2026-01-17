@@ -45,22 +45,46 @@ function HeroStack() {
   if (images.length === 0) return null
 
   return (
-    <div className="relative w-full aspect-square max-w-md mx-auto flex items-center justify-center">
-      {images.map((url, idx) => {
+    <div className="relative w-full aspect-video max-w-4xl mx-auto flex items-center justify-center py-12">
+      {images.slice(0, 3).map((url, idx) => {
         const isHovered = hoveredIdx === idx
         const isOtherHovered = hoveredIdx !== null && !isHovered
         
+        // Define positioning for the 3 images as per reference
+        // 0: Left, 1: Center (Dominant), 2: Right
+        let translateX = "0%"
+        let rotateZ = "0deg"
+        let zIndex = 10
+        let scale = 0.85
+        let brightness = "brightness(0.9)"
+
+        if (idx === 0) { // Left
+          translateX = "-40%"
+          rotateZ = "-15deg"
+          zIndex = 5
+        } else if (idx === 1) { // Center
+          translateX = "0%"
+          rotateZ = "0deg"
+          zIndex = 20
+          scale = 1
+          brightness = "brightness(1)"
+        } else if (idx === 2) { // Right
+          translateX = "40%"
+          rotateZ = "15deg"
+          zIndex = 5
+        }
+
         return (
           <div
             key={idx}
-            className="absolute inset-0 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] rounded-2xl overflow-hidden shadow-2xl border-4 border-white/10 cursor-pointer"
+            className="absolute w-2/3 aspect-[4/3] transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] rounded-xl overflow-hidden shadow-2xl border-4 border-white/20 cursor-pointer"
             onMouseEnter={() => setHoveredIdx(idx)}
             onMouseLeave={() => setHoveredIdx(null)}
             style={{
-              transform: `scale(${isHovered ? 1.05 : 1}) translateZ(${isHovered ? '20px' : '0px'})`,
-              zIndex: isHovered ? 50 : 30 - idx,
-              opacity: isOtherHovered ? 0.7 : 1,
-              filter: isOtherHovered ? 'grayscale(0.2) blur(1px)' : 'none',
+              transform: `translateX(${translateX}) rotateZ(${rotateZ}) scale(${isHovered ? scale * 1.15 : scale}) translateZ(${isHovered ? '50px' : '0px'})`,
+              zIndex: isHovered ? 50 : zIndex,
+              opacity: isOtherHovered ? 0.6 : 1,
+              filter: `${isOtherHovered ? 'grayscale(0.2) blur(2px)' : 'none'} ${brightness}`,
             }}
           >
             <img src={url} alt={`Hero ${idx}`} className="w-full h-full object-cover transition-transform duration-700 ease-out" style={{ transform: isHovered ? 'scale(1.1)' : 'scale(1)' }} />
@@ -71,7 +95,6 @@ function HeroStack() {
   )
 }
 
-// Hero Section Component
 function HeroSection() {
   return (
     <section className="w-full min-h-[90vh] flex items-center bg-[#FAFAF8] py-20 px-4">
