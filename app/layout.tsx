@@ -30,7 +30,7 @@ export default function RootLayout({
           .preserve-3d { transform-style: preserve-3d; }
         `}</style>
       </head>
-      <body className={`font-sans antialiased ${_inter.className}`}>
+      <body className="antialiased font-milker">
         {children}
         <Analytics />
       </body>

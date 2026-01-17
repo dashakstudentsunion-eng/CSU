@@ -111,7 +111,7 @@ function HeroSection() {
     <section className="w-full min-h-[90vh] flex items-center bg-[#FAFAF8] py-20 px-4">
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div className="flex flex-col justify-center">
-          <h1 className="text-6xl lg:text-8xl font-bold text-[#59050D] leading-tight text-center lg:text-left">
+          <h1 className="text-6xl lg:text-8xl homepage-headline leading-tight text-center lg:text-left">
             A Students’ Union Initiative
           </h1>
         </div>
@@ -130,7 +130,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-background">
       <Navbar />
       <HeroSection />
-      <section className="py-32 px-4 sm:px-6 lg:px-8 bg-background">
+      <section className="py-32 px-4 sm:px-6 lg:px-8 bg-background font-milker">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-semibold text-foreground mb-12">Featured Categories</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
@@ -140,8 +140,8 @@ export default function HomePage() {
                 className="group rounded-lg p-8 bg-card hover:shadow-2xl transition-all duration-300 cursor-pointer border border-border/50 hover:border-[#59050D]/50 hover:-translate-y-2 relative overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-[#59050D]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <h3 className="text-xl font-semibold text-[#59050D] relative z-10 group-hover:scale-105 transition-transform origin-left">{card.title}</h3>
-                <p className="mt-6 text-sm text-muted-foreground relative z-10">{card.status}</p>
+                <h3 className="text-xl font-semibold text-primary relative z-10 group-hover:scale-105 transition-transform origin-left">{card.title}</h3>
+                <p className="mt-6 text-sm text-text-secondary relative z-10">{card.status}</p>
               </div>
             ))}
           </div>
