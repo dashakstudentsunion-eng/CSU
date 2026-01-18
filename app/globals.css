@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&display=swap');
 
+@import "tailwindcss";
+@import "tw-animate-css";
+
 @theme inline {
   --font-big-shoulders: "Big Shoulders Display", cursive;
   --font-milker: "Milker", sans-serif;
@@ -9,6 +12,27 @@
   --color-text-primary: #1F1F1F;
   --color-text-secondary: #4A4A4A;
   --color-border-divider: #E8E2D8;
+
+  /* Re-mapping core variables for standard utility classes */
+  --color-background: #FAFAF8;
+  --color-foreground: #1F1F1F;
+  --color-card: #ffffff;
+  --color-card-foreground: #1F1F1F;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #1F1F1F;
+  --color-primary: #660000;
+  --color-primary-foreground: #FFFFFF;
+  --color-secondary: #E5D2B7;
+  --color-secondary-foreground: #1F1F1F;
+  --color-muted: #FAFAF8;
+  --color-muted-foreground: #4A4A4A;
+  --color-accent: #E5D2B7;
+  --color-accent-foreground: #660000;
+  --color-destructive: #dc2626;
+  --color-destructive-foreground: #ffffff;
+  --color-border: #E8E2D8;
+  --color-input: #E8E2D8;
+  --color-ring: #660000;
 }
 
 :root {
@@ -35,6 +59,9 @@
 }
 
 @layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
   body {
     @apply bg-background text-foreground font-milker;
   }
