@@ -41,7 +41,8 @@ Configured for Replit autoscale deployment:
 ### Render Deployment Configuration
 To deploy on Render, use these Environment Variables:
 - **Key**: `DATABASE_URL`
-  - **Value**: Your PostgreSQL connection string (e.g., `postgres://user:password@host:port/db`)
+  - **Value**: Your Supabase connection string (Transaction Poller recommended).
+  - **Example**: `postgresql://postgres.[ID]:[PASSWORD]@aws-1-ap-southeast-1.pooler.supabase.com:6543/postgres`
 - **Key**: `SESSION_SECRET`
   - **Value**: Any long, unique random string for security.
 - **Key**: `NODE_ENV`
