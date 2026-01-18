@@ -107,49 +107,84 @@ function HeroStack() {
 }
 
 function HeroSection() {
-  return (
-    <section className="w-full min-h-[90vh] flex items-center bg-[#FAFAF8] py-20 px-4">
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        <div className="flex flex-col justify-center">
-          <h1 className="text-6xl lg:text-8xl homepage-headline leading-[0.9] text-left uppercase flex flex-col">
-            <span>A Students&apos;</span>
-            <span>Union</span>
-            <span>Initiative</span>
-          </h1>
-        </div>
-        <div className="relative">
-          <HeroStack />
-        </div>
-      </div>
-    </section>
-  )
+  return null; // Integrated into HomePage
 }
 
 import { Instagram, MessageCircle, Mail } from "lucide-react"
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <HeroSection />
-      <section className="py-32 px-4 sm:px-6 lg:px-8 bg-background font-milker">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-semibold text-foreground mb-12">Featured Categories</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-            {homeCards.map((card) => (
-              <div
-                key={card.id}
-                className="group rounded-lg p-8 bg-card hover:shadow-2xl transition-all duration-300 cursor-pointer border border-border/50 hover:border-[#59050D]/50 hover:-translate-y-2 relative overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-[#59050D]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <h3 className="text-xl font-semibold text-primary relative z-10 group-hover:scale-105 transition-transform origin-left">{card.title}</h3>
-                <p className="mt-6 text-sm text-text-secondary relative z-10">{card.status}</p>
+    <div className="min-h-screen bg-[#F0F0EE] p-4 md:p-8 font-milker">
+      <div className="max-w-7xl mx-auto skeuo-container bg-[#FAFAF8]">
+        <Navbar />
+        
+        <main className="px-6 py-12 lg:px-12">
+          {/* Header Section with 3D Look */}
+          <div className="flex flex-col lg:flex-row gap-12 items-center mb-24">
+            <div className="flex-1 space-y-8">
+              <div className="inline-block glass-pill text-primary font-bold tracking-wider text-sm uppercase">
+                Challenge UI • Web Design
               </div>
-            ))}
+              <h1 className="text-7xl lg:text-9xl homepage-headline leading-[0.85] text-left uppercase flex flex-col italic">
+                <span>A Students&apos;</span>
+                <span className="ml-4">Union</span>
+                <span className="ml-8">Initiative</span>
+              </h1>
+              <div className="flex gap-4">
+                <Button className="skeuo-button btn-primary px-8 py-6 text-lg border-[#4D0000]">
+                  LOGIN
+                </Button>
+                <Button variant="outline" className="skeuo-button bg-white text-primary border-primary/20 px-8 py-6 text-lg hover:bg-secondary/20">
+                  BUAT AKUN
+                </Button>
+              </div>
+            </div>
+            
+            <div className="flex-1 w-full relative group">
+              <div className="absolute -inset-4 bg-primary/5 rounded-[3rem] blur-2xl group-hover:bg-primary/10 transition-colors" />
+              <HeroStack />
+            </div>
           </div>
-        </div>
-      </section>
-      <Footer />
+
+          {/* Featured Cards with Skeuomorphic Design */}
+          <section className="space-y-12">
+            <div className="flex items-center justify-between">
+              <h2 className="text-3xl font-bold text-primary flex items-center gap-3 italic">
+                <span className="w-8 h-1 bg-primary rounded-full" />
+                FEATURED CATEGORIES
+              </h2>
+              <div className="glass-pill text-xs font-bold text-text-secondary italic">
+                PENJELASAN SINGKAT TENTANG CSU
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+              {homeCards.map((card) => (
+                <div
+                  key={card.id}
+                  className="skeuo-card group p-8 cursor-pointer relative overflow-hidden"
+                >
+                  <div className="absolute top-0 right-0 w-16 h-16 bg-primary/5 rounded-bl-[2rem] transition-all group-hover:w-full group-hover:h-full group-hover:rounded-none" />
+                  <div className="relative z-10">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-6 text-primary group-hover:bg-white transition-colors">
+                      <MessageCircle size={20} />
+                    </div>
+                    <h3 className="text-xl font-bold text-primary mb-4 leading-tight uppercase italic">{card.title}</h3>
+                    <p className="text-xs font-medium text-text-secondary/60 uppercase tracking-widest">{card.status}</p>
+                    <div className="mt-8 flex justify-end">
+                      <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all">
+                        →
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        </main>
+        
+        <Footer />
+      </div>
     </div>
   )
 }
