@@ -3,55 +3,65 @@
 import { motion } from "framer-motion"
 
 const logos = [
-  { id: 1, src: "/images/dashak-logo.png", alt: "Dashak" },
-  { id: 2, src: "/images/caliph-life-school.png", alt: "Caliph Life School" },
+  { id: 1, type: "dashak" },
+  { id: 2, type: "caliph" },
 ]
 
 export function LogoMarquee() {
   // Triple the logos to ensure seamless infinity scroll
-  const marqueeLogos = [...logos, ...logos, ...logos]
+  const marqueeLogos = [...logos, ...logos, ...logos, ...logos]
 
   return (
-    <div className="w-full bg-[#660000] py-12 overflow-hidden relative">
+    <div className="w-full bg-[#660000] py-8 overflow-hidden relative border-y border-white/5">
       <motion.div
-        className="flex whitespace-nowrap gap-24 items-center"
+        className="flex whitespace-nowrap gap-32 items-center"
         animate={{
-          x: ["0%", "-33.33%"],
+          x: ["0%", "-50%"],
         }}
         transition={{
-          duration: 20,
+          duration: 25,
           ease: "linear",
           repeat: Infinity,
         }}
       >
         {marqueeLogos.map((logo, index) => (
-          <div key={`${logo.id}-${index}`} className="flex items-center gap-4 min-w-max">
-            {/* Logo placeholder if images don't exist yet */}
-            <div className="h-16 flex items-center gap-8">
-              {logo.id === 1 ? (
-                <div className="flex flex-col items-start">
-                   <span className="text-white text-4xl font-bold tracking-tighter">DAS·HAK</span>
-                   <span className="text-white/70 text-[10px] uppercase tracking-[0.2em]">Caliph Students' Union 2025-26</span>
-                </div>
-              ) : (
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 rounded-full border-2 border-white/20 flex items-center justify-center">
-                    <div className="w-10 h-10 border-t-4 border-white/80 rounded-full rotate-45" />
+          <div key={`${logo.id}-${index}`} className="flex items-center">
+            {logo.type === "dashak" ? (
+              <div className="flex flex-col items-center">
+                 <div className="flex items-center gap-1">
+                    <span className="text-white text-6xl font-normal tracking-[0.1em] font-sans">DAS·HAK</span>
+                 </div>
+                 <span className="text-white/80 text-[10px] uppercase tracking-[0.25em] mt-1">Caliph Students' Union 2025-26</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-6">
+                {/* Geometric Islamic Pattern Logo */}
+                <div className="relative w-20 h-20 flex flex-col items-center justify-center">
+                  <div className="w-full h-1/2 overflow-hidden relative">
+                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-20 h-20 border-[3px] border-white/90 rounded-full clip-path-half flex items-center justify-center">
+                       {/* Simplified Pattern Grid */}
+                       <div className="grid grid-cols-4 grid-rows-4 w-full h-full opacity-40">
+                          {[...Array(16)].map((_, i) => (
+                            <div key={i} className="border-[0.5px] border-white/40" />
+                          ))}
+                       </div>
+                    </div>
                   </div>
-                  <div className="flex flex-col">
-                    <span className="text-white text-3xl font-bold uppercase tracking-wide">Caliph</span>
-                    <span className="text-white/90 text-sm uppercase tracking-widest">Life School</span>
-                  </div>
+                  <div className="w-24 h-[2px] bg-white/90 mt-1" />
                 </div>
-              )}
-            </div>
+                <div className="flex flex-col">
+                  <span className="text-white text-5xl font-bold uppercase tracking-tight leading-none">Caliph</span>
+                  <span className="text-white/90 text-2xl font-light uppercase tracking-[0.15em] leading-tight">Life School</span>
+                </div>
+              </div>
+            )}
           </div>
         ))}
       </motion.div>
       
       {/* Gradient masks for seamless fade */}
-      <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#660000] to-transparent z-10" />
-      <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#660000] to-transparent z-10" />
+      <div className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-[#660000] via-[#660000]/80 to-transparent z-10" />
+      <div className="absolute inset-y-0 right-0 w-40 bg-gradient-to-l from-[#660000] via-[#660000]/80 to-transparent z-10" />
     </div>
   )
 }
