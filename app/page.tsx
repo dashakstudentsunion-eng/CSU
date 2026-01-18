@@ -48,8 +48,8 @@ function HeroStack() {
   if (images.length === 0) return null
 
   return (
-    <div className="relative w-full aspect-[4/3] max-w-4xl mx-auto flex items-center justify-center py-20 px-4 overflow-visible">
-      <div className="relative w-full h-full flex items-center justify-center perspective-2000">
+    <div className="relative w-full aspect-[4/3] max-w-5xl mx-auto flex items-center justify-center py-24 px-4 overflow-visible">
+      <div className="relative w-full h-full flex items-center justify-center perspective-[3000px]">
         {images.slice(0, 3).map((url, idx) => {
           const isHovered = hoveredIdx === idx
           const isOtherHovered = hoveredIdx !== null && !isHovered
@@ -58,46 +58,46 @@ function HeroStack() {
           let rotateY = "0deg"
           let rotateZ = "0deg"
           let zIndex = 10
-          let scale = 0.85
+          let scale = 0.9
 
           if (idx === 0) { // Left
-            translateX = "-48%"
-            rotateY = "35deg"
-            rotateZ = "-5deg" // Increased tilt
+            translateX = "-55%"
+            rotateY = "45deg"
+            rotateZ = "-8deg"
             zIndex = 5
           } else if (idx === 1) { // Center
             translateX = "0%"
             rotateY = "0deg"
             rotateZ = "0deg"
             zIndex = 20
-            scale = 1
+            scale = 1.15
           } else if (idx === 2) { // Right
-            translateX = "48%"
-            rotateY = "-35deg"
-            rotateZ = "5deg" // Increased tilt
+            translateX = "55%"
+            rotateY = "-45deg"
+            rotateZ = "8deg"
             zIndex = 5
           }
 
           return (
             <div
               key={idx}
-              className="absolute w-[55%] aspect-[4/3] transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] rounded-[16px] overflow-hidden shadow-[0_30px_60px_-12px_rgba(0,0,0,0.45),0_18px_36px_-18px_rgba(0,0,0,0.5)] border-[1px] border-white/20 cursor-pointer preserve-3d"
+              className="absolute w-[65%] aspect-[4/3] transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] rounded-[24px] overflow-hidden shadow-[0_40px_80px_-15px_rgba(0,0,0,0.5),0_25px_50px_-25px_rgba(0,0,0,0.55)] border-[2px] border-white/30 cursor-pointer preserve-3d"
               onMouseEnter={() => setHoveredIdx(idx)}
               onMouseLeave={() => setHoveredIdx(null)}
               style={{
-                transform: `translateX(${translateX}) rotateY(${rotateY}) rotateZ(${rotateZ}) scale(${isHovered ? scale * 1.15 : scale}) translateZ(${isHovered ? '150px' : '0px'})`,
+                transform: `translateX(${translateX}) rotateY(${rotateY}) rotateZ(${rotateZ}) scale(${isHovered ? scale * 1.2 : scale}) translateZ(${isHovered ? '250px' : '0px'})`,
                 zIndex: isHovered ? 50 : zIndex,
-                opacity: isOtherHovered ? 0.65 : 1,
-                filter: isOtherHovered ? 'brightness(0.7) blur(2px)' : 'none',
+                opacity: isOtherHovered ? 0.6 : 1,
+                filter: isOtherHovered ? 'brightness(0.6) blur(4px)' : 'none',
               }}
             >
               <img 
                 src={url} 
                 alt={`Hero ${idx}`} 
                 className="w-full h-full object-cover transition-transform duration-700 ease-out" 
-                style={{ transform: isHovered ? 'scale(1.08)' : 'scale(1)' }}
+                style={{ transform: isHovered ? 'scale(1.1)' : 'scale(1)' }}
               />
-              <div className="absolute inset-0 ring-1 ring-inset ring-white/10" />
+              <div className="absolute inset-0 ring-2 ring-inset ring-white/20" />
             </div>
           )
         })}
