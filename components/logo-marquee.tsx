@@ -20,14 +20,28 @@ export function LogoMarquee() {
           <img 
             src="/images/marquee-poster.png" 
             alt="Students Union Banner" 
-            className="h-24 md:h-32 w-auto object-contain"
+            className="h-24 md:h-32 w-auto object-contain px-4"
           />
         </div>
         <div className="flex shrink-0">
           <img 
             src="/images/marquee-poster.png" 
             alt="Students Union Banner" 
-            className="h-24 md:h-32 w-auto object-contain"
+            className="h-24 md:h-32 w-auto object-contain px-4"
+          />
+        </div>
+        <div className="flex shrink-0">
+          <img 
+            src="/images/marquee-poster.png" 
+            alt="Students Union Banner" 
+            className="h-24 md:h-32 w-auto object-contain px-4"
+          />
+        </div>
+        <div className="flex shrink-0">
+          <img 
+            src="/images/marquee-poster.png" 
+            alt="Students Union Banner" 
+            className="h-24 md:h-32 w-auto object-contain px-4"
           />
         </div>
       </motion.div>
