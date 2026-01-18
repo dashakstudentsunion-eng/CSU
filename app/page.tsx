@@ -5,6 +5,7 @@ import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { MessageCircle } from "lucide-react"
+import { LogoMarquee } from "@/components/logo-marquee"
 
 const homeCards = [
   { id: 1, title: "Results", status: "Coming later" },
@@ -128,6 +129,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-background">
       <Navbar />
       <HeroSection />
+      <LogoMarquee />
       <section className="py-32 px-4 sm:px-6 lg:px-8 bg-background font-milker">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-semibold text-foreground mb-12 uppercase italic">Featured Categories</h2>
