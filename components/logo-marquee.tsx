@@ -31,7 +31,7 @@ export function LogoMarquee() {
                  <div className="flex items-center">
                     <span className="text-white text-7xl font-light tracking-[0.12em] font-sans">DAS·HAK</span>
                  </div>
-                 <span className="text-white/70 text-[11px] uppercase tracking-[0.3em] mt-1 font-sans">Caliph Students' Union 2025-26</span>
+                 <span className="text-white/70 text-[11px] uppercase tracking-[0.3em] mt-1 font-sans">CALIPH STUDENTS' UNION 2025-26</span>
               </div>
             ) : (
               <div className="flex items-center gap-8">
@@ -52,8 +52,8 @@ export function LogoMarquee() {
                   <div className="w-28 h-[2.5px] bg-white/90 mt-1" />
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-white text-6xl font-bold uppercase tracking-tight leading-none font-sans">Caliph</span>
-                  <span className="text-white/90 text-3xl font-light uppercase tracking-[0.18em] leading-tight font-sans">Life School</span>
+                  <span className="text-white text-6xl font-bold uppercase tracking-tight leading-none font-sans">CALIPH</span>
+                  <span className="text-white/90 text-3xl font-light uppercase tracking-[0.18em] leading-tight font-sans">LIFE SCHOOL</span>
                 </div>
               </div>
             )}
