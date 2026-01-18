@@ -71,7 +71,7 @@
   font-family: var(--font-big-shoulders);
   font-weight: 800;
   color: #660000;
-  letter-spacing: 0.05em;
+  letter-spacing: -0.02em;
 }
 
 .milker-font {

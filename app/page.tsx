@@ -111,8 +111,10 @@ function HeroSection() {
     <section className="w-full min-h-[90vh] flex items-center bg-[#FAFAF8] py-20 px-4">
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div className="flex flex-col justify-center">
-          <h1 className="text-6xl lg:text-8xl homepage-headline leading-tight text-center lg:text-left">
-            A Students’ Union Initiative
+          <h1 className="text-6xl lg:text-8xl homepage-headline leading-[0.9] text-left uppercase flex flex-col">
+            <span>A Students&apos;</span>
+            <span>Union</span>
+            <span>Initiative</span>
           </h1>
         </div>
         <div className="relative">
