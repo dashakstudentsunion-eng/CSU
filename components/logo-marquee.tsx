@@ -4,9 +4,9 @@ import { motion } from "framer-motion"
 
 export function LogoMarquee() {
   return (
-    <div className="w-full bg-[#660000] py-4 overflow-hidden relative border-y border-white/5">
+    <div className="w-full bg-[#660000] overflow-hidden relative">
       <motion.div
-        className="flex whitespace-nowrap items-center"
+        className="flex whitespace-nowrap"
         animate={{
           x: ["0%", "-50%"],
         }}
@@ -20,35 +20,31 @@ export function LogoMarquee() {
           <img 
             src="/images/marquee-poster.png" 
             alt="Students Union Banner" 
-            className="h-24 md:h-32 w-auto object-contain px-4"
+            className="h-24 md:h-32 w-auto block"
           />
         </div>
         <div className="flex shrink-0">
           <img 
             src="/images/marquee-poster.png" 
             alt="Students Union Banner" 
-            className="h-24 md:h-32 w-auto object-contain px-4"
+            className="h-24 md:h-32 w-auto block"
           />
         </div>
         <div className="flex shrink-0">
           <img 
             src="/images/marquee-poster.png" 
             alt="Students Union Banner" 
-            className="h-24 md:h-32 w-auto object-contain px-4"
+            className="h-24 md:h-32 w-auto block"
           />
         </div>
         <div className="flex shrink-0">
           <img 
             src="/images/marquee-poster.png" 
             alt="Students Union Banner" 
-            className="h-24 md:h-32 w-auto object-contain px-4"
+            className="h-24 md:h-32 w-auto block"
           />
         </div>
       </motion.div>
-      
-      {/* Gradient masks for seamless fade */}
-      <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#660000] to-transparent z-10" />
-      <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#660000] to-transparent z-10" />
     </div>
   )
 }
