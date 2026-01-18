@@ -24,12 +24,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <style>{`
-          .perspective-1000 { perspective: 1000px; }
-          .preserve-3d { transform-style: preserve-3d; }
-        `}</style>
-      </head>
       <body className="antialiased font-milker">
         {children}
         <Analytics />
