@@ -38,5 +38,14 @@ Configured for Replit autoscale deployment:
 - Build: `npm run build`
 - Run: `npm run start -- -p 5000 -H 0.0.0.0`
 
+### Render Deployment Configuration
+To deploy on Render, use these Environment Variables:
+- **Key**: `DATABASE_URL`
+  - **Value**: Your PostgreSQL connection string (e.g., `postgres://user:password@host:port/db`)
+- **Key**: `SESSION_SECRET`
+  - **Value**: Any long, unique random string for security.
+- **Key**: `NODE_ENV`
+  - **Value**: `production` (usually set by default)
+
 ## Configuration Notes
 - `allowedDevOrigins: ['*']` in next.config.mjs allows Replit's proxy to work correctly in development
